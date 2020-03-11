@@ -19,9 +19,7 @@
   "author": "Joshua Burke",
   "license": "MIT",
   "homepage": "https://github.com/BurlingtonCodeAcademy/geo-vermonter#readme",
-  "devDependencies": {
-    "cypress": "^3.0.2"
-  },
+  "devDependencies": {},
   "browserslist": {
     "production": [
       ">0.2%",
