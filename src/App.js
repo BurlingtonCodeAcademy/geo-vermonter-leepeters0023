@@ -74,12 +74,17 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
   render() {
     return(
       <div>
+        <div id="header">
         <button id="startButton" className="button" onClick={this.startGame} disabled={this.state.start}> Start Game</button>
         <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
         <button id="guessButton" className="button" onClick={this.makeGuess}disabled={!this.state.start}>Guess</button>
-         <Maplet id="maplet" 
-
-         zoom={this.state.zoom}/>
+        </div>
+        <div id="body">
+          <Maplet id="maplet" zoom={this.state.zoom}/>
+          <div id="menu"> 
+          
+          </div>
+         </div>
       </div>
     )
   }
