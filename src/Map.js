@@ -2,10 +2,16 @@ import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import borderData from './border.js'
+import LeafletPip from 'leaflet-pip'
 
 class Maplet extends Component {
+  constructor(props){
+    super(props);
+  }
+  
 
   componentDidMount() {
+    //Creates the Map
     this.map = L.map('map', {
       center: [44.0886, -72.7317],
       zoom: 8,
@@ -15,9 +21,14 @@ class Maplet extends Component {
     gameStart: false
   })
   L.geoJSON(borderData).addTo(this.map) 
+  
 }
 
-render() {
+  componentDidUpdate({markerPosition, startPosition}){
+
+  }
+    
+    render() {
   return <div id='map' />
   }
 

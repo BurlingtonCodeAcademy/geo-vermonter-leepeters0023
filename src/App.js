@@ -1,21 +1,27 @@
 import React from 'react';
-//import L from 'leaflet';
-//import leafletPip from 'leaflet-pip'; 
+import L from 'leaflet';
+import LeafletPip from 'leaflet-pip'; 
 import Maplet from './Map.js';
 import './App.css';
+import borderData from './border.js'
+
+// Variable Declaration-------------------------------
 let randLat;
 let randLng;
-let center; 
+let layerArray;
+
+
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       start: false,
       quit: false,
       zoom: 8, 
       score: 100,
       center: [44.0886, -72.7317],
+      
     }
   }
   getRandomLat = () => { // return random latitute to a lot of decimal places (maybe trim later?)
@@ -23,14 +29,14 @@ class App extends React.Component {
     return lat;
 }
 getRandomLng = () => { // return random longitude to a lot of decimal places (maybe trim later?)
-  let lng = (Math.random() *(71.510225 - 73.35218) + 73.35218) * -1;
+  let lng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1;
   return lng;
 }
   startGame = () => {
     this.setState({
       start: true,
       quit: false,
-      zoom: 8,
+      zoom: 18,
       center: [randLat, randLng]
 
     }) 
@@ -38,6 +44,8 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
       console.log(randLat)
       randLng = this.getRandomLng()
       console.log(randLng)
+      let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
+      console.log(layerArray)
   }
 
   makeGuess = () => {
