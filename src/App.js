@@ -10,18 +10,16 @@ let randLat;
 let randLng;
 let layerArray;
 
-
-
 class App extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       start: false,
       quit: false,
       zoom: 8, 
       score: 100,
       center: [44.0886, -72.7317],
-      
+      initialPoint: [44.0886, -72.7317]
     }
   }
   getRandomLat = () => { // return random latitute to a lot of decimal places (maybe trim later?)
@@ -33,19 +31,25 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
   return lng;
 }
   startGame = () => {
-    this.setState({
-      start: true,
-      quit: false,
-      zoom: 18,
-      center: [randLat, randLng]
-
-    }) 
       randLat = this.getRandomLat()
       console.log(randLat)
       randLng = this.getRandomLng()
       console.log(randLng)
       let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
       console.log(layerArray)
+      while(layerArray.length === 0) {
+        randLat = this.getRandomLat()
+        randLng = this.getRandomLng()
+        layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
+        console.log(layerArray)
+      }
+      this.setState({
+        start: true,
+        quit: false,
+        //initialPoint: [randLat, randLng],
+        center: [randLat, randLng],
+        zoom: 18
+      }) 
   }
 
   makeGuess = () => {
@@ -73,12 +77,12 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
         <button id="startButton" className="button" onClick={this.startGame} disabled={this.state.start}> Start Game</button>
         <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
         <button id="guessButton" className="button" onClick={this.makeGuess}disabled={!this.state.start}>Guess</button>
-         <Maplet id="maplet" />
+         <Maplet id="maplet" 
+
+         zoom={this.state.zoom}/>
       </div>
     )
   }
 }
-
-
 
 export default App;
