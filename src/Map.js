@@ -19,21 +19,13 @@ class Maplet extends Component {
       center: [44.0886, -72.7317],
       zoom: this.props.zoom,
       layers: [L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x})',
-        { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false }),
+      {attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false}),
       ],
       gameStart: false,
     })
-    L.geoJSON(borderData).addTo(this.map)
-
-    this.marker = L.marker(this.props.markerPosition).addTo(this.map)
-
-    { attribution : 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false}),
-  ],
-    gameStart: false,
-  })
-  L.geoJSON(borderData).addTo(this.map) 
-  
-}
+      L.geoJSON(borderData).addTo(this.map)
+      this.marker = L.marker(this.props.markerPosition).addTo(this.map)
+  }
   componentDidUpdate() {
     this.map.setZoom(this.props.zoom)
    /* this.map.dragging.disable()

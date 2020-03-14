@@ -11,7 +11,6 @@ import vtCountyPolygons from './vtCountyPolygons'
 let randLat;
 let randLng;
 let layerArray;
-let countyX;
 
 class App extends React.Component {
   constructor(props) {
@@ -24,22 +23,20 @@ class App extends React.Component {
       score: 100,
       startPoint: [ undefined, undefined],
       markerPosition: [ 44.0886, -72.7317],
-      modalDisplayed: false
+      modalDisplayed: false,
+      counties: []
     }
   }
 // counties func -------------------------------
 componentDidMount() {
-  fetch('./vtCountyPolygons')
+  fetch(vtCountyPolygons)
     .then(res => res.json())
     .then(result => {
       this.setState({
-        isLoaded: true,
-        items: result
+        counties: result.CNTYNAME 
       });
     });
 }
-
-
 
 // counties func ^ ^ ---------------------------
 getRandomLat = () => { 
@@ -55,9 +52,9 @@ getRandomLng = () => {
       console.log(randLat)
       randLng = this.getRandomLng()
       console.log(randLng)
-      console.log(countyX)
       let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
       console.log(layerArray)
+      console.log(App.counties, 'this shit works')
       while(layerArray.length === 0) {
         randLat = this.getRandomLat()
         randLng = this.getRandomLng()
