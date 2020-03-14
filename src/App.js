@@ -37,6 +37,10 @@ componentDidMount() {
       });
     });
 }
+// list of counties is assigned as an array to 'getCounty'
+// getCounty is used to display list of counties as clickable list items
+// pip checks random lat long against counties - what does this return? 
+// if guess === correct county, win 
 
 // counties func ^ ^ ---------------------------
 getRandomLat = () => { 
@@ -73,13 +77,6 @@ getRandomLng = () => {
       console.log(this.startPoint)
     
   }
- 
-
-  
-// list of counties is assigned as an array to 'getCounty'
-// getCounty is used to display list of counties as clickable list items
-// pip checks random lat long against counties - what does this return? 
-// if guess === correct county, win 
 
   makeGuess = () => {
     // take input from play in the form of a dropped pin
@@ -113,7 +110,12 @@ getRandomLng = () => {
         <div id="body">
           <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition}/>
           <div id="menu"> 
-
+            <div id="gridForDirectionalButtons">
+              <button id="westButton" className="button" onClick={this.state.move}>West</button>   
+              <button id="northButton" className="button" onClick={this.state.move}>North</button>   
+              <button id="southButton" className="button" onClick={this.state.move}>South</button>  
+              <button id="eastButton" className="button" onClick={this.state.move}>East</button>
+            </div>      
           { // if give up clicked or user guessed correctly, give LocationInfo the markerPosition, county, and town 
             (quit) && 
               <Infopanel markerPosition={this.state.markerPosition} 

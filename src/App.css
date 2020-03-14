@@ -8,6 +8,7 @@
   height: 75px;
   background-color: #222629;
 }
+/* - - - buttons - - - */ 
 .button {
   background-color: rgb(95, 97, 95); 
   border: none;
@@ -27,6 +28,13 @@
   transition: all .5s ease-out;
   color: aqua;
 }
+
+#gridForDirectionalButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+/* - - - buttons - - - */ 
 #body {
   display: grid;
   grid-template-columns: 75% 1fr;
@@ -35,12 +43,28 @@
 }
 #menu {
   height: 90vh;
-  /* background-color:  */
+  display: flex;
+  flex-direction: row;
+  z-index: 0;
+  position: relative;
 }
  #maplet {
   height: 90vh;  
+  display: flex;
+  position: relative;
+  z-index: 1;
+ }
+ .arrow {
+   z-index: 100;
+   position: absolute;
+   height: 50px;
+   width: 75px;
  }
 
+ }
+#arrowT {
+  margin-top: 200px;
+}
 a.leaflet-control-zoom-out{
 display: none;
 }
