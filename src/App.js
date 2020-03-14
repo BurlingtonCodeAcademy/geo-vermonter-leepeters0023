@@ -18,9 +18,10 @@ class App extends React.Component {
       start: false,
       quit: false,
       zoom: 8, 
-      score: 100,
       center: [44.0886, -72.7317],
-      initialPoint: [44.0886, -72.7317]
+      score: 100,
+      startPoint: [ undefined, undefined],
+      markerPosition: [ 44.0886, -72.7317]
     }
   }
   getRandomLat = () => { // return random latitute to a lot of decimal places (maybe trim later?)
@@ -47,10 +48,14 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
       this.setState({
         start: true,
         quit: false,
-        //initialPoint: [randLat, randLng],
-        center: [randLat, randLng],
-        zoom: 18
+        score: 100,
+        zoom: 18,
+        startPoint: [ randLat, randLng],
+        markerPosition: [ randLat,  randLng ]
       }) 
+      console.log(this.markerPosition)
+      console.log(this.startPoint)
+    
   }
 
   makeGuess = () => {
@@ -64,7 +69,8 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
 
   //When player clicks on Quit button
   quitGame = () => {
-    this.setState({start: false, })
+    this.setState({
+      start: false, })
       // info panel displays randomNum
       // and correct town & county is displayed
       // setTimeout(3000, resets page)
@@ -80,7 +86,7 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
         <button id="guessButton" className="button" onClick={this.makeGuess}disabled={!this.state.start}>Guess</button>
         </div>
         <div id="body">
-          <Maplet id="maplet" zoom={this.state.zoom}/>
+          <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition}/>
           <div id="menu"> 
           </div>
          </div>
