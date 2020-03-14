@@ -18,10 +18,11 @@ class App extends React.Component {
       start: false,
       quit: false,
       zoom: 8, 
-      center: [44.0886, -72.7317],
+      centerView: [44.0886, -72.7317],
       score: 100,
       startPoint: [ undefined, undefined],
-      markerPosition: [ 44.0886, -72.7317]
+      markerPosition: [ 44.0886, -72.7317],
+      modalDisplayed: false
     }
   }
   getRandomLat = () => { // return random latitute to a lot of decimal places (maybe trim later?)
@@ -70,7 +71,8 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
   //When player clicks on Quit button
   quitGame = () => {
     this.setState({
-      start: false, })
+      start: false,
+      quit: true })
       // info panel displays randomNum
       // and correct town & county is displayed
       // setTimeout(3000, resets page)
@@ -78,6 +80,7 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
   }
 
   render() {
+    let { centerView, quit, zoom, start, score, startPoint, markerPosition, modalDisplayed } = this.state
     return(
       <div>
         <div id="header">
@@ -88,9 +91,20 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
         <div id="body">
           <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition}/>
           <div id="menu"> 
+
+          { // if give up clicked or user guessed correctly, give LocationInfo the markerPosition, county, and town 
+            (quit) && 
+              <Infopanel markerPosition={this.state.markerPosition} 
+                            //  county={} town={}
+                             /> }
+          { // if give up button not clicked and user did not guess correctly, LocationInfo gets '??'
+            (!quit) && 
+              <Infopanel markerPosition={{lat: '?', lng: '?'}}
+                            county={'?'} town={'?'} /> }
           </div>
+          
          </div>
-        <Infopanel   /> 
+         
       </div>
     )
   }
