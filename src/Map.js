@@ -27,6 +27,22 @@ class Maplet extends Component {
 
     this.marker = L.marker(this.props.markerPosition).addTo(this.map)
 
+    { attribution : 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false}),
+  ],
+    gameStart: false,
+  })
+  L.geoJSON(borderData).addTo(this.map) 
+  
+}
+  componentDidUpdate() {
+    this.map.setZoom(this.props.zoom)
+   /* this.map.dragging.disable()
+    this.map.scrollWheelZoom.disable()
+    this.touchZoom.disable()
+    this.doubleClickZoom.disable()
+    this.boxZoom.disable()
+    this.keyboard.disable() */
+    // ----->> disables were throwing errors on start, commenting out for now <<------
   }
   componentDidUpdate({ markerPosition }) {
 
