@@ -30,6 +30,12 @@ class Maplet extends Component {
     this.map.setZoom(this.props.zoom)
     this.map.dragging.disable()
     this.map.scrollWheelZoom.disable()
+    this.map.touchZoom.disable()
+    this.map.doubleClickZoom.disable()
+    this.map.boxZoom.disable()
+    this.map.keyboard.disable()
+
+    
   }
     render() {
   return <div id='map' />

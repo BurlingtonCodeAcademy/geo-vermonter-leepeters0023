@@ -4,6 +4,7 @@ import LeafletPip from 'leaflet-pip';
 import Maplet from './Map.js';
 import './App.css';
 import borderData from './border.js'
+import Infopanel from './Infopanel.js'
 
 // Variable Declaration-------------------------------
 let randLat;
@@ -61,14 +62,13 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
     // if incorrect, subtract 10pts from score
   }
 
+  //When player clicks on Quit button
   quitGame = () => {
-    this.setState({
-      quit: true,
-      start: false, 
+    this.setState({start: false, })
       // info panel displays randomNum
       // and correct town & county is displayed
       // setTimeout(3000, resets page)
-    })
+    
   }
 
   render() {
@@ -82,9 +82,9 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
         <div id="body">
           <Maplet id="maplet" zoom={this.state.zoom}/>
           <div id="menu"> 
-          
           </div>
          </div>
+        <Infopanel   /> 
       </div>
     )
   }

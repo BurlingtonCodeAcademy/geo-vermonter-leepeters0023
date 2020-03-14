@@ -35,8 +35,15 @@
 }
 #menu {
   height: 90vh;
-  background-color: 
+  /* background-color:  */
 }
  #maplet {
   height: 90vh;  
  }
+
+a.leaflet-control-zoom-out{
+display: none;
+}
+a.leaflet-control-zoom-in{
+  display:none;
+}
