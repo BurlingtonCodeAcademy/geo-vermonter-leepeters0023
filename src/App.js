@@ -4,11 +4,13 @@ import LeafletPip from 'leaflet-pip';
 import Maplet from './Map.js';
 import './App.css';
 import borderData from './border.js'
+import vtCountyPolygons from './vtCountyPolygons'
 
 // Variable Declaration-------------------------------
 let randLat;
 let randLng;
 let layerArray;
+let countyX;
 
 class App extends React.Component {
   constructor(props) {
@@ -19,14 +21,30 @@ class App extends React.Component {
       zoom: 8, 
       score: 100,
       center: [44.0886, -72.7317],
-      initialPoint: [44.0886, -72.7317]
+      initialPoint: [44.0886, -72.7317],
+      counties: []
     }
   }
-  getRandomLat = () => { // return random latitute to a lot of decimal places (maybe trim later?)
+// counties func -------------------------------
+componentDidMount() {
+  fetch('./vtCountyPolygons')
+    .then(res => res.json())
+    .then(result => {
+      this.setState({
+        isLoaded: true,
+        items: result
+      });
+    });
+}
+
+
+
+// counties func ^ ^ ---------------------------
+getRandomLat = () => { 
     let lat = Math.random() * (45.005419 - 42.730315) + 42.730315;
     return lat;
 }
-getRandomLng = () => { // return random longitude to a lot of decimal places (maybe trim later?)
+getRandomLng = () => { 
   let lng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1;
   return lng;
 }
@@ -35,6 +53,7 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
       console.log(randLat)
       randLng = this.getRandomLng()
       console.log(randLng)
+      console.log(countyX)
       let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
       console.log(layerArray)
       while(layerArray.length === 0) {
@@ -51,6 +70,13 @@ getRandomLng = () => { // return random longitude to a lot of decimal places (ma
         zoom: 18
       }) 
   }
+ 
+
+  
+// list of counties is assigned as an array to 'getCounty'
+// getCounty is used to display list of counties as clickable list items
+// pip checks random lat long against counties - what does this return? 
+// if guess === correct county, win 
 
   makeGuess = () => {
     // take input from play in the form of a dropped pin

@@ -28,8 +28,13 @@ class Maplet extends Component {
 }
   componentDidUpdate() {
     this.map.setZoom(this.props.zoom)
-    this.map.dragging.disable()
+   /* this.map.dragging.disable()
     this.map.scrollWheelZoom.disable()
+    this.touchZoom.disable()
+    this.doubleClickZoom.disable()
+    this.boxZoom.disable()
+    this.keyboard.disable() */
+    // ----->> disables were throwing errors on start, commenting out for now <<------
   }
     render() {
   return <div id='map' />
