@@ -195,7 +195,6 @@ class App extends React.Component {
 
 
   returnPosition = () => {
-
   }
 
   render() {
