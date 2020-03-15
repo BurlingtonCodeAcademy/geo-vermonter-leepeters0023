@@ -1,13 +1,18 @@
 import React from 'react';
 import L from 'leaflet';
 import LeafletPip from 'leaflet-pip';
+import borderData from './border.js';
+import ReactDOM from 'react-dom';
+
+// ----------React Components---------------------------//
 import Maplet from './Map.js';
 import './App.css';
-import borderData from './border.js'
 import Infopanel from './Infopanel.js'
-import countyData from './vtCountyPolygons'
+import countyData from './vtCountyPolygons.js'
+import Modal from './Modal.js'
 
 
+//-------------Main React parent Component-------------//
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -20,10 +25,10 @@ class App extends React.Component {
       score: 100,
       startPoint: { lat: undefined, lng: undefined },
       markerPosition: { lat: 44.0886, lng: -72.7317 },
-      modalDisplayed: false,
-      pathArray: [],//breadcrumbs
+      pathArray: [],
       counties: [],
-      town: []
+      town: [],
+      modalDisplay: false,
     }
   }
 
@@ -77,6 +82,13 @@ class App extends React.Component {
 
   }
 
+  //Modal functions----------------------------------
+
+  showModal = () => {
+    this.setState({
+        modalDisplay: true
+    })
+}
   //When player starts the game--------------------------
 
   startGame = () => {
@@ -167,17 +179,21 @@ class App extends React.Component {
     })
   }
 
-  //------------------------
+  //-------when player clicks guess button------------
 
 
   makeGuess = () => {
+      this.setState({
+        modalDisplay: true //open the "guess" form 
+      })
+    }
     // take input from play in the form of a dropped pin
     // take coordinates from pin and check against random pin coordinates
     // clickable county menu appears 
     // check lat long against inner polygon and/ or county code
     // if correct, add points to score & alert is displayed 
     // if incorrect, subtract 10pts from score
-  }
+  
 
   //When player clicks on Quit button
   quitGame = () => {
@@ -193,6 +209,7 @@ class App extends React.Component {
 
   render() {
     let quit = this.state.quit
+    let modalDisplay = this.state.modalDisplay
     return (
       <div>
         <div id="header">
@@ -202,6 +219,7 @@ class App extends React.Component {
         </div>
         <div id="body">
           <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition} />
+          <Modal   modalDisplay = {modalDisplay} />
           <div id="menu">
             <div id="gridForDirectionalButtons">
               <button id="westButton" className="button" onClick={this.moveWest}>West</button>
