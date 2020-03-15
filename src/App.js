@@ -9,13 +9,12 @@ import Maplet from './Map.js';
 import './App.css';
 import Infopanel from './Infopanel.js'
 import countyData from './vtCountyPolygons.js'
-import Modal from './Modal.js'
 
+// Variable Declaration-------------------------------
 
-//-------------Main React parent Component-------------//
-
-//Modal.setAppElement(Modal)
-
+let randLat;
+let randLng;
+let layerArray;
 
 class App extends React.Component {
   constructor(props) {
@@ -181,6 +180,46 @@ class App extends React.Component {
       let pathArray = state.pathArray.concat(state.markerPosition)
       return {
         pathArray
+      startPoint: [ undefined, undefined],
+      markerPosition: [ 44.0886, -72.7317],
+      modalDisplayed: false,
+      countyData: []
+    }
+  }
+// counties func -------------------------------
+componentDidMount() {
+      this.setState({
+        countyData: countyData.features.properties
+      })
+      console.log(countyData)
+  } 
+// list of counties is assigned as an array to 'getCounty'
+// getCounty is used to display list of counties as clickable list items
+// pip checks random lat long against counties - what does this return? 
+// if guess === correct county, win 
+
+// counties func ^ ^ ---------------------------
+getRandomLat = () => { 
+    let lat = Math.random() * (45.005419 - 42.730315) + 42.730315;
+    return lat;
+}
+getRandomLng = () => { 
+  let lng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1;
+  return lng;
+}
+  startGame = () => {
+      randLat = this.getRandomLat()
+      console.log(randLat)
+      randLng = this.getRandomLng()
+      console.log(randLng)
+      let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
+      console.log(layerArray)
+      console.log(this.counties, 'this should be a list of counties')
+      while(layerArray.length === 0) {
+        randLat = this.getRandomLat()
+        randLng = this.getRandomLng()
+        layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
+        console.log(layerArray)
       }
     })
   }
