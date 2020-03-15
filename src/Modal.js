@@ -2,21 +2,21 @@ import React, { Component } from 'react'
 
 class Modal extends Component {
 
-constructor(props){
-    super(props)
-}
+
     render() {
-        if (this.props.modalDisplayed) {
+        if (this.props.modalDisplay) {
             return (
                 <div id="modal">
-                    A bunch of stuff
-                </div>
-            )
-        } else {
-            return <div />
-        }
-    }
-
+                    [Addison, Bennington, Caledonia, Chittenden, Essex, Franklin, Grand Isle,
+                     Lamoille, Orleans, Orange, Rutland, Washington, Windham, Windsor]
+        </div>
+        )
+      } else {
+        return <div />
+      }
+  }
 }
 
 export default Modal
+
+              

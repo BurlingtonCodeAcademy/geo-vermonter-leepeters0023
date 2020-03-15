@@ -13,12 +13,17 @@ import Modal from './Modal.js'
 
 
 //-------------Main React parent Component-------------//
+
+//Modal.setAppElement(Modal)
+
+
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       start: false,
       quit: false,
+      guess: false,
       zoom: 8,
       borderLayer: L.geoJSON(borderData),
       center: { lat: 44.0886, lng: -72.7317 },
@@ -86,9 +91,9 @@ class App extends React.Component {
 
   showModal = () => {
     this.setState({
-        modalDisplay: true
+      modalDisplay: true
     })
-}
+  }
   //When player starts the game--------------------------
 
   startGame = () => {
@@ -96,6 +101,7 @@ class App extends React.Component {
     this.setState({
       start: true,
       quit: false,
+      guess: false,
       score: 100,
       zoom: 18,
     })
@@ -183,23 +189,25 @@ class App extends React.Component {
 
 
   makeGuess = () => {
-      this.setState({
-        modalDisplay: true //open the "guess" form 
-      })
-    }
-    // take input from play in the form of a dropped pin
-    // take coordinates from pin and check against random pin coordinates
-    // clickable county menu appears 
-    // check lat long against inner polygon and/ or county code
-    // if correct, add points to score & alert is displayed 
-    // if incorrect, subtract 10pts from score
-  
+    this.setState({
+      modalDisplay: true,
+      guess: true //open the "guess" form 
+    })
+  }
+  // take input from play in the form of a dropped pin
+  // take coordinates from pin and check against random pin coordinates
+  // clickable county menu appears 
+  // check lat long against inner polygon and/ or county code
+  // if correct, add points to score & alert is displayed 
+  // if incorrect, subtract 10pts from score
+
 
   //When player clicks on Quit button
   quitGame = () => {
     this.setState({
       start: false,
-      quit: true
+      quit: true,
+      guess: false
     })
     // info panel displays randomNum
     // and correct town & county is displayed
@@ -210,6 +218,8 @@ class App extends React.Component {
   render() {
     let quit = this.state.quit
     let modalDisplay = this.state.modalDisplay
+    let guess = this.state.guess
+
     return (
       <div>
         <div id="header">
@@ -217,9 +227,12 @@ class App extends React.Component {
           <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
           <button id="guessButton" className="button" onClick={this.makeGuess} disabled={!this.state.start}>Guess</button>
         </div>
+        <div id='modal'>
+          <Modal modalDisplay={this.state.modalDisplay} />
+        </div>
         <div id="body">
           <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition} />
-          <Modal   modalDisplay = {modalDisplay} />
+
           <div id="menu">
             <div id="gridForDirectionalButtons">
               <button id="westButton" className="button" onClick={this.moveWest}>West</button>
@@ -228,15 +241,15 @@ class App extends React.Component {
               <button id="eastButton" className="button" onClick={this.moveEast}>East</button>
             </div>
             {/* // if give up clicked or user guessed correctly, give the markerPosition, county, and town */}
-            {(quit) &&
+            {((quit)||(guess)) && 
               <Infopanel markerPosition={this.state.markerPosition}
                 county={this.state.county} town={this.state.town}
                 score={this.state.score}
               />}
-            
+
             {/* // if give up button not clicked, all areas post '?' marks  */}
-            { (!quit) &&
-              <Infopanel markerPosition={{ lat: '?', lng: '?' }}
+            {((!quit) && (!guess))  &&
+              <Infopanel lat={'?'} lng={'?'}
                 county={'?'} town={'?'} />}
                 score={this.state.score}
           </div>
