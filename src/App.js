@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import Maplet from './Map.js';
 import './App.css';
 import Infopanel from './Infopanel.js'
-import countyData from './vtCountyPolygons.js'
 
 // Variable Declaration-------------------------------
 
@@ -30,40 +29,19 @@ class App extends React.Component {
       startPosition: { lat: 1, lng: 1 },
       markerPosition: { lat: 44.0886, lng: -72.7317 },
       pathArray: [],
-      counties: [],
       town: [],
+      county: [],
+      hamlet: [],
+      village: [],
       modalDisplay: false,
     }
   }
-
-  // counties func -------------------------------
-  componentDidMount() {
-    fetch(countyData)
-      .then(res => res.json())
-      .then(result => {
-        this.setState({
-          counties: result.CNTYNAME
-        });
-      });
-  }
-  // list of counties is assigned as an array to 'getCounty'
-  // getCounty is used to display list of counties as clickable list items
-  // pip checks random lat long against counties - what does this return? 
-  // if guess === correct county, win 
-
-  // counties func ^ ^ ---------------------------
-
-
-
   // Function to pick random coordinates and verify within VT-----------------
 
   checkValidCoord = () => {
     let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
     let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
     let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
-
-    console.log(App.counties, 'this shit works')
-
     //If random coordinate is not within VT--------
     while (layerArray.length === 0) {
       let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
@@ -96,8 +74,8 @@ class App extends React.Component {
   //When player starts the game--------------------------
 
   startGame = () => {
-
     this.setState({
+      center: [randLat, randLng],
       start: true,
       quit: false,
       guess: false,
@@ -106,6 +84,30 @@ class App extends React.Component {
     })
 
     this.checkValidCoord()
+
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${randLat}&lon=${randLng}`)
+    .then(data => data.json())
+    .then(jsonObj => {
+      let town;
+      if (jsonObj.address.city) {
+        town = jsonObj.address.city;
+      } else if (jsonObj.address.town) {
+        town = jsonObj.address.town;
+      } else if (jsonObj.address.village) {
+        town = jsonObj.address.village;
+      } else if (jsonObj.address.hamlet) {
+        town = jsonObj.address.village;
+      }
+      this.setState({
+        App: { 
+        county: jsonObj.address.county,
+        town: town,
+        gameStarted: true,
+        win: false
+         }
+      });
+      console.log(jsonObj)
+    });
   }
 
   //Direction Buttons-------------------------------------
@@ -180,52 +182,11 @@ class App extends React.Component {
       let pathArray = state.pathArray.concat(state.markerPosition)
       return {
         pathArray
-      startPoint: [ undefined, undefined],
-      markerPosition: [ 44.0886, -72.7317],
-      modalDisplayed: false,
-      countyData: []
-    }
-  }
-// counties func -------------------------------
-componentDidMount() {
-      this.setState({
-        countyData: countyData.features.properties
-      })
-      console.log(countyData)
-  } 
-// list of counties is assigned as an array to 'getCounty'
-// getCounty is used to display list of counties as clickable list items
-// pip checks random lat long against counties - what does this return? 
-// if guess === correct county, win 
-
-// counties func ^ ^ ---------------------------
-getRandomLat = () => { 
-    let lat = Math.random() * (45.005419 - 42.730315) + 42.730315;
-    return lat;
-}
-getRandomLng = () => { 
-  let lng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1;
-  return lng;
-}
-  startGame = () => {
-      randLat = this.getRandomLat()
-      console.log(randLat)
-      randLng = this.getRandomLng()
-      console.log(randLng)
-      let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
-      console.log(layerArray)
-      console.log(this.counties, 'this should be a list of counties')
-      while(layerArray.length === 0) {
-        randLat = this.getRandomLat()
-        randLng = this.getRandomLng()
-        layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
-        console.log(layerArray)
       }
     })
   }
 
-  //-------when player clicks guess button------------
-
+//-------when player clicks guess button------------
 
   makeGuess = () => {
     this.setState({
@@ -233,13 +194,6 @@ getRandomLng = () => {
       guess: true //open the "guess" form 
     })
   }
-  // take input from play in the form of a dropped pin
-  // take coordinates from pin and check against random pin coordinates
-  // clickable county menu appears 
-  // check lat long against inner polygon and/ or county code
-  // if correct, add points to score & alert is displayed 
-  // if incorrect, subtract 10pts from score
-
 
   //When player clicks on Quit button
   quitGame = () => {
@@ -253,7 +207,7 @@ getRandomLng = () => {
     // setTimeout(3000, resets page)
 
   }
-
+// <Modal modalDisplay={this.state.modalDisplay} />
 
   returnPosition = () => {
 
@@ -273,12 +227,13 @@ getRandomLng = () => {
           <button id="guessButton" className="button" onClick={this.makeGuess} disabled={!this.state.start}>Guess</button>
         </div>
         <div id='modal'>
-          <Modal modalDisplay={this.state.modalDisplay} />
+           
         </div>
         <div id="body">
           <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition} startPosition={this.state.startPosition} />
 
           <div id="menu">
+          <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
             <div id="gridForDirectionalButtons">
               <button id="westButton" className="button" onClick={this.moveWest}>West</button>
               <button id="northButton" className="button" onClick={this.moveNorth}>North</button>
