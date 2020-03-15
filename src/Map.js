@@ -32,7 +32,7 @@ class Maplet extends Component {
     this.marker = L.marker(this.props.centerView).addTo(this.map)
 
     //Creates breadcrumb polyline
-    this.polyline = L.polyline(breadCrumbArray, {color: 'red'}).addTo(this.map);
+    this.polyline = L.polyline(pathArray, {color: 'red'}).addTo(this.map);
   }
 
   componentDidUpdate() {

@@ -121,8 +121,6 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
-      breadCrumbArray: [lat, lng],
-      console.log(this.breadCrumbArray)
     });
     console.log(this.state.score)
 
