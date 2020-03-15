@@ -34,8 +34,6 @@ class App extends React.Component {
       pathArray: [],
       county: [],
       town: [],
-      hamlet: [],
-      village: [],
       modalDisplay: false,
     }
   }
@@ -65,6 +63,26 @@ class App extends React.Component {
       }
     });
 
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${randLat}&lon=${randLng}&format=json`)
+      .then(data => data.json())
+      .then(jsonObj => {
+        let town;
+        if(jsonObj.address.city) {
+          town = jsonObj.address.city
+        } else if (jsonObj.address.town){
+          town = jsonObj.address.town
+        } else if (jsonObj.address.village){
+          town = jsonObj.address.village
+        } else if (jsonObj.address.hamlet) {
+          town = jsonObj.address.hamlet
+        }
+        this.setState({
+          county: jsonObj.address.county,
+          town: town
+        })
+        console.log(jsonObj)
+      })
+      
   }
 
   //Modal functions----------------------------------
@@ -90,29 +108,7 @@ class App extends React.Component {
 
     this.checkValidCoord()
 
-    // fetch(`https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${randLat}&lon=${randLng}`)
-    //   .then(data => data.json())
-    //   .then(jsonObj => {
-    //     let town;
-    //     if (jsonObj.address.city) {
-    //       town = jsonObj.address.city;
-    //     } else if (jsonObj.address.town) {
-    //       town = jsonObj.address.town;
-    //     } else if (jsonObj.address.village) {
-    //       town = jsonObj.address.village;
-    //     } else if (jsonObj.address.hamlet) {
-    //       town = jsonObj.address.village;
-    //     }
-    //     this.setState({
-    //       App: {
-    //         county: jsonObj.address.county,
-    //         town: town,
-    //         gameStarted: true,
-    //         win: false
-    //       }
-    //     });
-    //     console.log(jsonObj)
-    //   });
+    
   }
 
   //Direction Buttons-------------------------------------
@@ -209,7 +205,7 @@ class App extends React.Component {
 
   }
  
-  //when user clicks return, takes them back to their original starting spot, with 0 points deducted
+  //when user clicks return button, site takes them back to their original starting spot, with 0 points deducted
   returnPosition = () => {
     this.setState({
       centerView: this.state.initialPoint
