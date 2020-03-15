@@ -90,29 +90,29 @@ class App extends React.Component {
 
     this.checkValidCoord()
 
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${randLat}&lon=${randLng}`)
-    .then(data => data.json())
-    .then(jsonObj => {
-      let town;
-      if (jsonObj.address.city) {
-        town = jsonObj.address.city;
-      } else if (jsonObj.address.town) {
-        town = jsonObj.address.town;
-      } else if (jsonObj.address.village) {
-        town = jsonObj.address.village;
-      } else if (jsonObj.address.hamlet) {
-        town = jsonObj.address.village;
-      }
-      this.setState({
-        App: { 
-        county: jsonObj.address.county,
-        town: town,
-        gameStarted: true,
-        win: false
-         }
-      });
-      console.log(jsonObj)
-    });
+    // fetch(`https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${randLat}&lon=${randLng}`)
+    //   .then(data => data.json())
+    //   .then(jsonObj => {
+    //     let town;
+    //     if (jsonObj.address.city) {
+    //       town = jsonObj.address.city;
+    //     } else if (jsonObj.address.town) {
+    //       town = jsonObj.address.town;
+    //     } else if (jsonObj.address.village) {
+    //       town = jsonObj.address.village;
+    //     } else if (jsonObj.address.hamlet) {
+    //       town = jsonObj.address.village;
+    //     }
+    //     this.setState({
+    //       App: {
+    //         county: jsonObj.address.county,
+    //         town: town,
+    //         gameStarted: true,
+    //         win: false
+    //       }
+    //     });
+    //     console.log(jsonObj)
+    //   });
   }
 
   //Direction Buttons-------------------------------------
@@ -208,15 +208,21 @@ class App extends React.Component {
     // setTimeout(3000, resets page)
 
   }
-// <Modal modalDisplay={this.state.modalDisplay} />
-
+ 
+  //when user clicks return, takes them back to their original starting spot, with 0 points deducted
   returnPosition = () => {
+    this.setState({
+      centerView: this.state.initialPoint
+    })
+
+
   }
 
   render() {
     let quit = this.state.quit
     let guess = this.state.guess
     let initialPoint = this.state.initialPoint
+    
 
     return (
       <div>
@@ -227,14 +233,14 @@ class App extends React.Component {
         </div>
 
         <div id='modal'>
-           
+
         </div>
         <div id="body">
           <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} />
 
           <div id="menu">
 
-          <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
+            <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
             <div id="gridForDirectionalButtons">
               <button id="westButton" className="button" onClick={this.moveWest}>West</button>
               <button id="northButton" className="button" onClick={this.moveNorth}>North</button>
@@ -253,7 +259,7 @@ class App extends React.Component {
 
             {/* // if give up button not clicked, all areas post '?' marks  */}
             {((!quit) && (!guess)) &&
-              <Infopanel  lat={'?'} lng={'?'} county={'?'} town={'?'} />}
+              <Infopanel lat={'?'} lng={'?'} county={'?'} town={'?'} />}
                 score={this.state.score}
           </div>
 
