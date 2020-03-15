@@ -1,16 +1,12 @@
 import React from 'react';
 import L from 'leaflet';
-import LeafletPip from 'leaflet-pip'; 
+import LeafletPip from 'leaflet-pip';
 import Maplet from './Map.js';
 import './App.css';
 import borderData from './border.js'
 import Infopanel from './Infopanel.js'
-import vtCountyPolygons from './vtCountyPolygons'
+import countyData from './vtCountyPolygons'
 
-// Variable Declaration-------------------------------
-let randLat;
-let randLng;
-let layerArray;
 
 class App extends React.Component {
   constructor(props) {
@@ -18,65 +14,156 @@ class App extends React.Component {
     this.state = {
       start: false,
       quit: false,
-      zoom: 8, 
-      centerView: [44.0886, -72.7317],
+      zoom: 8,
+      borderLayer: L.geoJSON(borderData),
+      center: { lat: 44.0886, lng: -72.7317 },
       score: 100,
-      startPoint: [ undefined, undefined],
-      markerPosition: [ 44.0886, -72.7317],
+      startPoint: { lat: undefined, lng: undefined },
+      markerPosition: { lat: 44.0886, lng: -72.7317 },
       modalDisplayed: false,
+      pathArray: [],//breadcrumbs
       counties: []
     }
   }
-// counties func -------------------------------
-componentDidMount() {
-  fetch(vtCountyPolygons)
-    .then(res => res.json())
-    .then(result => {
-      this.setState({
-        counties: result.CNTYNAME 
-      });
-    });
-}
-// list of counties is assigned as an array to 'getCounty'
-// getCounty is used to display list of counties as clickable list items
-// pip checks random lat long against counties - what does this return? 
-// if guess === correct county, win 
 
-// counties func ^ ^ ---------------------------
-getRandomLat = () => { 
-    let lat = Math.random() * (45.005419 - 42.730315) + 42.730315;
-    return lat;
-}
-getRandomLng = () => { 
-  let lng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1;
-  return lng;
-}
-  startGame = () => {
-      randLat = this.getRandomLat()
-      console.log(randLat)
-      randLng = this.getRandomLng()
-      console.log(randLng)
-      let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
-      console.log(layerArray)
-      console.log(App.counties, 'this shit works')
-      while(layerArray.length === 0) {
-        randLat = this.getRandomLat()
-        randLng = this.getRandomLng()
-        layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
-        console.log(layerArray)
-      }
-      this.setState({
-        start: true,
-        quit: false,
-        score: 100,
-        zoom: 18,
-        startPoint: [ randLat, randLng],
-        markerPosition: [ randLat,  randLng ]
-      }) 
-      console.log(this.markerPosition)
-      console.log(this.startPoint)
-    
+  // counties func -------------------------------
+  componentDidMount() {
+    fetch(countyData)
+      .then(res => res.json())
+      .then(result => {
+        this.setState({
+          counties: result.CNTYNAME
+        });
+      });
   }
+  // list of counties is assigned as an array to 'getCounty'
+  // getCounty is used to display list of counties as clickable list items
+  // pip checks random lat long against counties - what does this return? 
+  // if guess === correct county, win 
+
+  // counties func ^ ^ ---------------------------
+
+
+
+  // Function to pick random coordinates and verify within VT-----------------
+
+  checkValidCoord = () => {
+    let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
+    let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
+    let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
+
+    console.log(App.counties, 'this shit works')
+
+    //If random coordinate is not within VT--------
+    while (layerArray.length === 0) {
+      let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
+      let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
+      layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
+    }
+
+    this.setState({
+      startPoint: { lat: randLat, lng: randLng },
+      markerPosition: { lat: randLat, lng: randLng }
+    })
+
+
+    this.setState(state => {
+      let pathArray = state.pathArray.concat(state.startPoint)
+      return {
+        pathArray
+      }
+    });
+
+  }
+
+  //When player starts the game--------------------------
+
+  startGame = () => {
+
+    this.setState({
+      start: true,
+      quit: false,
+      score: 100,
+      zoom: 18,
+    })
+
+    this.checkValidCoord()
+  }
+
+  //Direction Buttons-------------------------------------
+
+  moveNorth = () => {
+    this.setState({
+      markerPosition: {
+        lat: this.state.markerPosition.lat + 0.002,
+        lng: this.state.markerPosition.lng
+      },
+      score: this.state.score - 1,
+    });
+    console.log(this.state.score)
+
+    this.setState(state => {
+      let pathArray = state.pathArray.concat(state.markerPosition)
+      return {
+        pathArray
+      }
+    })
+  }
+
+  moveSouth = () => {
+    this.setState({
+      markerPosition: {
+        lat: this.state.markerPosition.lat - 0.002,
+        lng: this.state.markerPosition.lng
+      },
+      score: this.state.score - 1,
+    });
+    console.log(this.state.score);
+    this.setState(state => {
+      let pathArray = state.pathArray.concat(state.markerPosition)
+      return {
+        pathArray
+      }
+    })
+  }
+
+  moveEast = () => {
+    this.setState({
+      markerPosition: {
+        lat: this.state.markerPosition.lat,
+        lng: this.state.markerPosition.lng + 0.0025
+      },
+      score: this.state.score - 1,
+
+    });
+    console.log(this.state.score);
+    this.setState(state => {
+      let pathArray = state.pathArray.concat(state.markerPosition)
+      return {
+        pathArray
+      }
+    })
+  }
+
+  moveWest = () => {
+    this.setState({
+      markerPosition: {
+        lat: this.state.lat,
+        lng: this.state.lng - 0.0025
+      },
+      score: this.state.score - 1,
+    });
+    console.log(this.state.score);
+    this.setState(state => {
+      let pathArray = state.pathArray.concat(state.markerPosition)
+      return {
+        pathArray
+      }
+    })
+  }
+
+  //------------------------
+
 
   makeGuess = () => {
     // take input from play in the form of a dropped pin
@@ -91,44 +178,47 @@ getRandomLng = () => {
   quitGame = () => {
     this.setState({
       start: false,
-      quit: true })
-      // info panel displays randomNum
-      // and correct town & county is displayed
-      // setTimeout(3000, resets page)
-    
+      quit: true
+    })
+    // info panel displays randomNum
+    // and correct town & county is displayed
+    // setTimeout(3000, resets page)
+
   }
 
   render() {
-    let { centerView, quit, zoom, start, score, startPoint, markerPosition, modalDisplayed } = this.state
-    return(
+    let quit = this.state.quit
+    return (
       <div>
         <div id="header">
-        <button id="startButton" className="button" onClick={this.startGame} disabled={this.state.start}> Start Game</button>
-        <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
-        <button id="guessButton" className="button" onClick={this.makeGuess}disabled={!this.state.start}>Guess</button>
+          <button id="startButton" className="button" onClick={this.startGame} disabled={this.state.start}> Start Game</button>
+          <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
+          <button id="guessButton" className="button" onClick={this.makeGuess} disabled={!this.state.start}>Guess</button>
         </div>
         <div id="body">
-          <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition}/>
-          <div id="menu"> 
+          <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition} />
+          <div id="menu">
             <div id="gridForDirectionalButtons">
-              <button id="westButton" className="button" onClick={this.state.move}>West</button>   
-              <button id="northButton" className="button" onClick={this.state.move}>North</button>   
-              <button id="southButton" className="button" onClick={this.state.move}>South</button>  
-              <button id="eastButton" className="button" onClick={this.state.move}>East</button>
-            </div>      
-          { // if give up clicked or user guessed correctly, give LocationInfo the markerPosition, county, and town 
-            (quit) && 
-              <Infopanel markerPosition={this.state.markerPosition} 
-                            //  county={} town={}
-                             /> }
-          { // if give up button not clicked and user did not guess correctly, LocationInfo gets '??'
-            (!quit) && 
-              <Infopanel markerPosition={{lat: '?', lng: '?'}}
-                            county={'?'} town={'?'} /> }
+              <button id="westButton" className="button" onClick={this.moveWest}>West</button>
+              <button id="northButton" className="button" onClick={this.moveNorth}>North</button>
+              <button id="southButton" className="button" onClick={this.moveSouth}>South</button>
+              <button id="eastButton" className="button" onClick={this.moveEast}>East</button>
+            </div>
+            { // if give up clicked or user guessed correctly, give the markerPosition, county, and town 
+              (quit) &&
+              <Infopanel markerPosition={this.state.markerPosition}
+                county={'county'} town={'town'}
+                score={this.state.score}
+              />}
+            { // if give up button not clicked, all areas post '?' marks 
+              (!quit) &&
+              <Infopanel markerPosition={{ lat: '?', lng: '?' }}
+                county={'?'} town={'?'} />}
+                score={this.state.score}
           </div>
-          
-         </div>
-         
+
+        </div>
+
       </div>
     )
   }

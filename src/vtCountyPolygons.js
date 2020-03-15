@@ -1,4 +1,4 @@
-let countyData = {
+const countyData = {
   "type": "FeatureCollection",
   "features": [{
       "type": "Feature",

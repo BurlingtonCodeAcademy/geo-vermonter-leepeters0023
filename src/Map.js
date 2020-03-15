@@ -27,16 +27,7 @@ class Maplet extends Component {
   
     this.marker = L.marker(this.props.markerPosition).addTo(this.map)
   }
-  componentDidUpdate() {
-    this.map.setZoom(this.props.zoom)
-   /* this.map.dragging.disable()
-    this.map.scrollWheelZoom.disable()
-    this.touchZoom.disable()
-    this.doubleClickZoom.disable()
-    this.boxZoom.disable()
-    this.keyboard.disable() */
-    // ----->> disables were throwing errors on start, commenting out for now <<------
-  }
+  
   componentDidUpdate({ markerPosition }) {
 
     if (this.props.markerPosition !== markerPosition) {
