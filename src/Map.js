@@ -3,6 +3,8 @@ import { Map, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet'
 import L from 'leaflet'
 import borderData from './border.js'
 import LeafletPip from 'leaflet-pip'
+import App from './App.js'
+import pathArray from './App.js'
 
 class Maplet extends Component {
   constructor(props) {
@@ -32,7 +34,7 @@ class Maplet extends Component {
     this.marker = L.marker(this.props.centerView).addTo(this.map)
 
     //Creates breadcrumb polyline
-    this.polyline = L.polyline(pathArray, {color: 'red'}).addTo(this.map);
+   // this.polyline = L.polyline(pathArray, {color: 'red'}).addTo(this.map);
   }
 
   componentDidUpdate() {

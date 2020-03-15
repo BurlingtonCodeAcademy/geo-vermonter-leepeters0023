@@ -200,7 +200,7 @@ class App extends React.Component {
       quit: true,
       guess: false
     })
-    setTimeout(() => {location.reload(); }, 2000);
+    setTimeout(() => {window.location.reload(); }, 2000);
   }
  
   //when user clicks return button, site takes them back to their original starting spot, with 0 points deducted
