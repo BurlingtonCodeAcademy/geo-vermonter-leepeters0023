@@ -8,41 +8,64 @@ class Maplet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      center: this.props.center
-
+      centerView: this.props.centerView
     }
   }
 
   componentDidMount() {
     //Creates the Map
     this.map = L.map('map', {
-      center: [44.0886, -72.7317],
+      centerView: [44.0886, -72.7317],
       zoom: this.props.zoom,
       layers: [L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x})',
         { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false }),
       ],
-     
+
     })
-    L.geoJSON(borderData).addTo(this.map)
-  
-    this.marker = L.marker(this.props.markerPosition).addTo(this.map)
+    //center the map on VT and zooms out
+    this.map.setView([43.89, -72.7317], 8)
+
+    //Gives the outline of VT
+    this.props.vtBorder.addTo(this.map).setStyle({ fillColor: 'rgba(0,0,0,0)' })
+
+    //Creates a map marker
+    this.marker = L.marker(this.props.centerView).addTo(this.map)
   }
-  
-  componentDidUpdate({ markerPosition }) {
-    if ( this.props.markerPosition !== markerPosition) {
-      this.map.iconAnchor=[markerPosition]
-      this.marker.setLatLng(this.props.markerPosition)
-      this.map.setZoom(this.props.zoom)
-      this.map.dragging.disable()
-      this.map.scrollWheelZoom.disable()
-      this.map.touchZoom.disable()
-      this.map.doubleClickZoom.disable()
-      this.map.boxZoom.disable()
-      this.map.keyboard.disable()
-      this.map.panTo(this.props.markerPosition)  
+
+  componentDidUpdate() {
+
+
+    //disable map controls
+    this.map.setZoom(this.props.zoom)
+    this.map.dragging.disable()
+    this.map.scrollWheelZoom.disable()
+    this.map.touchZoom.disable()
+    this.map.doubleClickZoom.disable()
+    this.map.boxZoom.disable()
+    this.map.keyboard.disable()
+    this.marker =L.marker(this.props.initialPoint).addTo(this.map)
+    // If the game is running, and the centerView has updated
+    if(this.props.centerView !== this.state.centerView) {
+      this.setState({ centerView: this.props.centerView })
+      this.map.setView(this.props.centerView, 18)
     }
-       
-   }
+    //once game ends, go back to original view
+    // else if (!this.props.start) {
+    //   this.map.dragging.enable()
+    //   this.map.scrollWheelZoom.enable()
+    //   this.map.touchZoom.enable()
+    //   this.map.doubleClickZoom.enable()
+    //   this.map.boxZoom.enable()
+    //   this.map.keyboard.enable()
+    //   this.map.setView([43.89, -72.7317], 8)
+    // }
+
+    
+
+    this.map.panTo(this.props.centerView)
+
+
+  }
 
   render() {
     return <div id='map' />
