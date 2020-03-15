@@ -9,6 +9,7 @@ class Maplet extends Component {
     super(props);
     this.state = {
       centerView: this.props.centerView
+    
     }
   }
 
@@ -20,7 +21,6 @@ class Maplet extends Component {
       layers: [L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x})',
         { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false }),
       ],
-
     })
     //center the map on VT and zooms out
     this.map.setView([43.89, -72.7317], 8)
@@ -51,9 +51,7 @@ class Maplet extends Component {
       this.setState({ centerView: this.props.centerView })
       this.map.setView(this.props.centerView, 18)
     }
-
   }
-
   render() {
     return <div id='map' />
   }

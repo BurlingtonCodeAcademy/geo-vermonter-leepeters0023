@@ -60,6 +60,10 @@
   justify-self: left;
   grid-area: right; 
 }
+#returnButton {
+  height: 50px;
+  width: 75px;
+}
 /* - - - ^ ^ buttons ^ ^ - - - */ 
 #body {
   display: grid;
