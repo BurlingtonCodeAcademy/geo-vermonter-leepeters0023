@@ -28,7 +28,6 @@
   transition: all .5s ease-out;
   color: aqua;
 }
-
 #gridForDirectionalButtons {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -46,7 +45,6 @@
   height: 50px;
   width: 75px;
   margin-bottom: 100px;
-  
   grid-area: center;
 }
 #southButton {
@@ -62,7 +60,7 @@
   justify-self: left;
   grid-area: right; 
 }
-/* - - - buttons - - - */ 
+/* - - - ^ ^ buttons ^ ^ - - - */ 
 #body {
   display: grid;
   grid-template-columns: 75% 1fr;
@@ -76,13 +74,12 @@
   z-index: 0;
   position: relative;
 }
- #maplet {
+#maplet {
   height: 90vh;  
   display: flex;
   position: relative;
   z-index: 1;
  }
-
 a.leaflet-control-zoom-out{
 display: none;
 }

@@ -5,9 +5,10 @@ import Maplet from './Map.js';
 import './App.css';
 import borderData from './border.js'
 import Infopanel from './Infopanel.js'
-import vtCountyPolygons from './vtCountyPolygons'
+import countyData from './vtCountyPolygons.js'
 
 // Variable Declaration-------------------------------
+
 let randLat;
 let randLng;
 let layerArray;
@@ -24,19 +25,16 @@ class App extends React.Component {
       startPoint: [ undefined, undefined],
       markerPosition: [ 44.0886, -72.7317],
       modalDisplayed: false,
-      counties: []
+      countyData: []
     }
   }
 // counties func -------------------------------
 componentDidMount() {
-  fetch(vtCountyPolygons)
-    .then(res => res.json())
-    .then(result => {
       this.setState({
-        counties: result.CNTYNAME 
-      });
-    });
-}
+        countyData: countyData.features.properties
+      })
+      console.log(countyData)
+  } 
 // list of counties is assigned as an array to 'getCounty'
 // getCounty is used to display list of counties as clickable list items
 // pip checks random lat long against counties - what does this return? 
@@ -58,7 +56,7 @@ getRandomLng = () => {
       console.log(randLng)
       let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
       console.log(layerArray)
-      console.log(App.counties, 'this shit works')
+      console.log(this.counties, 'this should be a list of counties')
       while(layerArray.length === 0) {
         randLat = this.getRandomLat()
         randLng = this.getRandomLng()
