@@ -22,7 +22,8 @@ class App extends React.Component {
       markerPosition: { lat: 44.0886, lng: -72.7317 },
       modalDisplayed: false,
       pathArray: [],//breadcrumbs
-      counties: []
+      counties: [],
+      town: []
     }
   }
 
@@ -93,10 +94,11 @@ class App extends React.Component {
   //Direction Buttons-------------------------------------
 
   moveNorth = () => {
+    const { lat, lng } = this.state.markerPosition
     this.setState({
       markerPosition: {
-        lat: this.state.markerPosition.lat + 0.002,
-        lng: this.state.markerPosition.lng
+        lat: lat + 0.002,
+        lng: lng
       },
       score: this.state.score - 1,
     });
@@ -111,10 +113,11 @@ class App extends React.Component {
   }
 
   moveSouth = () => {
+    const { lat, lng } = this.state.markerPosition
     this.setState({
       markerPosition: {
-        lat: this.state.markerPosition.lat - 0.002,
-        lng: this.state.markerPosition.lng
+        lat: lat - 0.002,
+        lng: lng
       },
       score: this.state.score - 1,
     });
@@ -128,10 +131,11 @@ class App extends React.Component {
   }
 
   moveEast = () => {
+    const { lat, lng } = this.state.markerPosition
     this.setState({
       markerPosition: {
-        lat: this.state.markerPosition.lat,
-        lng: this.state.markerPosition.lng + 0.0025
+        lat: lat,
+        lng: lng + 0.0025
       },
       score: this.state.score - 1,
 
@@ -146,10 +150,11 @@ class App extends React.Component {
   }
 
   moveWest = () => {
+    const { lat, lng } = this.state.markerPosition
     this.setState({
       markerPosition: {
-        lat: this.state.lat,
-        lng: this.state.lng - 0.0025
+        lat: lat,
+        lng: lng - 0.0025
       },
       score: this.state.score - 1,
     });
@@ -204,14 +209,15 @@ class App extends React.Component {
               <button id="southButton" className="button" onClick={this.moveSouth}>South</button>
               <button id="eastButton" className="button" onClick={this.moveEast}>East</button>
             </div>
-            { // if give up clicked or user guessed correctly, give the markerPosition, county, and town 
-              (quit) &&
+            {/* // if give up clicked or user guessed correctly, give the markerPosition, county, and town */}
+            {(quit) &&
               <Infopanel markerPosition={this.state.markerPosition}
-                county={'county'} town={'town'}
+                county={this.state.county} town={this.state.town}
                 score={this.state.score}
               />}
-            { // if give up button not clicked, all areas post '?' marks 
-              (!quit) &&
+            
+            {/* // if give up button not clicked, all areas post '?' marks  */}
+            { (!quit) &&
               <Infopanel markerPosition={{ lat: '?', lng: '?' }}
                 county={'?'} town={'?'} />}
                 score={this.state.score}
