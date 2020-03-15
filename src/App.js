@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import Maplet from './Map.js';
 import './App.css';
 import Infopanel from './Infopanel.js'
-import countyData from './vtCountyPolygons.js'
 import Modal from './Modal.js'
 
 // Variable Declaration-------------------------------
@@ -20,6 +19,8 @@ let layerArray;
 class App extends React.Component {
   constructor(props) {
     super(props)
+
+    //setting the state
     this.state = {
       start: false,
       quit: false,
@@ -29,10 +30,9 @@ class App extends React.Component {
       centerView: { lat: 44.0886, lng: -72.7317 },
       initialPoint: { lat: 44.0886, lng: -72.7317 },
       score: 100,
-      startPosition: { lat: 1, lng: 1 },
       markerPosition: { lat: 44.0886, lng: -72.7317 },
       pathArray: [],
-      counties: [],
+      county: [],
       town: [],
       modalDisplay: false,
     }
@@ -85,8 +85,8 @@ class App extends React.Component {
       guess: false,
       score: 100,
       zoom: 18,
-      centerView: { lat: randLat, lng: randLng},
-      initialPoint: { lat: randLat, lng: randLng}
+      centerView: { lat: randLat, lng: randLng },
+      initialPoint: { lat: randLat, lng: randLng }
     })
 
     this.checkValidCoord()
@@ -113,7 +113,7 @@ class App extends React.Component {
   }
 
   moveSouth = () => {
-   this.setState({
+    this.setState({
       centerView: {
         lat: this.state.centerView.lat - 0.002,
         lng: this.state.centerView.lng
@@ -195,12 +195,13 @@ class App extends React.Component {
 
 
   returnPosition = () => {
+
   }
 
   render() {
     let quit = this.state.quit
-    let modalDisplay = this.state.modalDisplay
     let guess = this.state.guess
+    let initialPoint = this.state.initialPoint
 
     return (
       <div>
@@ -226,15 +227,14 @@ class App extends React.Component {
             </div>
             {/* // if give up clicked or user guessed correctly, give the markerPosition, county, and town */}
             {((quit) || (guess)) &&
-              <Infopanel markerPosition={this.state.markerPosition}
+              <Infopanel lat={this.state.initialPoint.lat.toFixed(4)} lng={this.state.initialPoint.lng.toFixed(4)}
                 county={this.state.county} town={this.state.town}
                 score={this.state.score}
               />}
 
             {/* // if give up button not clicked, all areas post '?' marks  */}
             {((!quit) && (!guess)) &&
-              <Infopanel lat={'?'} lng={'?'}
-                county={'?'} town={'?'} />}
+              <Infopanel  lat={'?'} lng={'?'} county={'?'} town={'?'} />}
                 score={this.state.score}
           </div>
 

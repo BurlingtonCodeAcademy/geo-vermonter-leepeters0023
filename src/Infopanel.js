@@ -17,10 +17,9 @@ class Infopanel extends Component {
         return (//this is ready for when we fetch the information
             <div>
                 
-                {` Latitude: ${lat} 
-                    Longitude: ${lng} 
-                    VT County: ${county} 
-                    VT Town: ${town} `}
+                { `You are at: ${lat} degrees, and ${lng} degrees.
+                   In VT County of: ${county}
+                   In the VT Town of: ${town} `}
             </div>
         )
     }

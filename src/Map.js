@@ -33,8 +33,6 @@ class Maplet extends Component {
   }
 
   componentDidUpdate() {
-
-
     //disable map controls
     this.map.setZoom(this.props.zoom)
     this.map.dragging.disable()
@@ -43,27 +41,16 @@ class Maplet extends Component {
     this.map.doubleClickZoom.disable()
     this.map.boxZoom.disable()
     this.map.keyboard.disable()
-    this.marker =L.marker(this.props.initialPoint).addTo(this.map)
-    // If the game is running, and the centerView has updated
-    if(this.props.centerView !== this.state.centerView) {
+
+    //setting the marker to initial position so it doesn't move when you click on NSEW buttons
+    this.marker = L.marker(this.props.initialPoint).addTo(this.map)
+    this.map.panTo(this.props.centerView)
+
+    // If the centerView has updated, and sets a close zoom of point 
+    if (this.props.centerView !== this.state.centerView) {
       this.setState({ centerView: this.props.centerView })
       this.map.setView(this.props.centerView, 18)
     }
-    //once game ends, go back to original view
-    // else if (!this.props.start) {
-    //   this.map.dragging.enable()
-    //   this.map.scrollWheelZoom.enable()
-    //   this.map.touchZoom.enable()
-    //   this.map.doubleClickZoom.enable()
-    //   this.map.boxZoom.enable()
-    //   this.map.keyboard.enable()
-    //   this.map.setView([43.89, -72.7317], 8)
-    // }
-
-    
-
-    this.map.panTo(this.props.centerView)
-
 
   }
 
