@@ -8,7 +8,10 @@ import ReactDOM from 'react-dom';
 import Maplet from './Map.js';
 import './App.css';
 import Infopanel from './Infopanel.js'
+<<<<<<< HEAD
 import Modal from './Modal.js'
+=======
+>>>>>>> sunday
 
 // Variable Declaration-------------------------------
 
@@ -32,8 +35,14 @@ class App extends React.Component {
       score: 100,
       markerPosition: { lat: 44.0886, lng: -72.7317 },
       pathArray: [],
+<<<<<<< HEAD
       county: [],
+=======
+>>>>>>> sunday
       town: [],
+      county: [],
+      hamlet: [],
+      village: [],
       modalDisplay: false,
     }
   }
@@ -43,9 +52,6 @@ class App extends React.Component {
     let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
     let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
     let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
-
-    console.log(App.counties, 'this shit works')
-
     //If random coordinate is not within VT--------
     while (layerArray.length === 0) {
       let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
@@ -78,8 +84,8 @@ class App extends React.Component {
   //When player starts the game--------------------------
 
   startGame = () => {
-
     this.setState({
+      center: [randLat, randLng],
       start: true,
       quit: false,
       guess: false,
@@ -90,6 +96,30 @@ class App extends React.Component {
     })
 
     this.checkValidCoord()
+
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${randLat}&lon=${randLng}`)
+    .then(data => data.json())
+    .then(jsonObj => {
+      let town;
+      if (jsonObj.address.city) {
+        town = jsonObj.address.city;
+      } else if (jsonObj.address.town) {
+        town = jsonObj.address.town;
+      } else if (jsonObj.address.village) {
+        town = jsonObj.address.village;
+      } else if (jsonObj.address.hamlet) {
+        town = jsonObj.address.village;
+      }
+      this.setState({
+        App: { 
+        county: jsonObj.address.county,
+        town: town,
+        gameStarted: true,
+        win: false
+         }
+      });
+      console.log(jsonObj)
+    });
   }
 
   //Direction Buttons-------------------------------------
@@ -164,7 +194,11 @@ class App extends React.Component {
     })
   }
 
+<<<<<<< HEAD
   //-------when player clicks guess button------------
+=======
+//-------when player clicks guess button------------
+>>>>>>> sunday
 
   makeGuess = () => {
     this.setState({
@@ -172,13 +206,6 @@ class App extends React.Component {
       guess: true //open the "guess" form 
     })
   }
-  // take input from play in the form of a dropped pin
-  // take coordinates from pin and check against random pin coordinates
-  // clickable county menu appears 
-  // check lat long against inner polygon and/ or county code
-  // if correct, add points to score & alert is displayed 
-  // if incorrect, subtract 10pts from score
-
 
   //When player clicks on Quit button
   quitGame = () => {
@@ -192,7 +219,7 @@ class App extends React.Component {
     // setTimeout(3000, resets page)
 
   }
-
+// <Modal modalDisplay={this.state.modalDisplay} />
 
   returnPosition = () => {
 
@@ -210,12 +237,22 @@ class App extends React.Component {
           <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
           <button id="guessButton" className="button" onClick={this.makeGuess} disabled={!this.state.start}>Guess</button>
         </div>
+<<<<<<< HEAD
 
+=======
+        <div id='modal'>
+           
+        </div>
+>>>>>>> sunday
         <div id="body">
           <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} />
 
           <div id="menu">
+<<<<<<< HEAD
 
+=======
+          <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
+>>>>>>> sunday
             <div id="gridForDirectionalButtons">
               <button id="westButton" className="button" onClick={this.moveWest}>West</button>
               <button id="northButton" className="button" onClick={this.moveNorth}>North</button>
