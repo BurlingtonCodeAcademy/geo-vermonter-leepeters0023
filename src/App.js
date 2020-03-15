@@ -85,7 +85,8 @@ class App extends React.Component {
       score: 100,
       zoom: 18,
       centerView: { lat: randLat, lng: randLng },
-      initialPoint: { lat: randLat, lng: randLng }
+      initialPoint: { lat: randLat, lng: randLng },
+      breadCrumbArray: []
     })
 
     this.checkValidCoord()
@@ -124,6 +125,8 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
+      breadCrumbArray: [lat, lng],
+      console.log(this.breadCrumbArray)
     });
     console.log(this.state.score)
 
@@ -203,10 +206,7 @@ class App extends React.Component {
       quit: true,
       guess: false
     })
-    // info panel displays randomNum
-    // and correct town & county is displayed
-    // setTimeout(3000, resets page)
-
+    setTimeout(() => {location.reload(); }, 2000);
   }
 // <Modal modalDisplay={this.state.modalDisplay} />
 
