@@ -8,7 +8,7 @@ class Maplet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      center: this.props.center,
+      center: this.props.center
 
     }
   }
@@ -21,7 +21,7 @@ class Maplet extends Component {
       layers: [L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x})',
         { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false }),
       ],
-      gameStart: false,
+     
     })
     L.geoJSON(borderData).addTo(this.map)
   
@@ -29,8 +29,8 @@ class Maplet extends Component {
   }
   
   componentDidUpdate({ markerPosition }) {
-
-    if (this.props.markerPosition !== markerPosition) {
+    if ( this.props.markerPosition !== markerPosition) {
+      this.map.iconAnchor=[markerPosition]
       this.marker.setLatLng(this.props.markerPosition)
       this.map.setZoom(this.props.zoom)
       this.map.dragging.disable()
@@ -39,8 +39,9 @@ class Maplet extends Component {
       this.map.doubleClickZoom.disable()
       this.map.boxZoom.disable()
       this.map.keyboard.disable()
-      this.map.panTo(this.props.markerPosition)
+      this.map.panTo(this.props.markerPosition)  
     }
+       
    }
 
   render() {

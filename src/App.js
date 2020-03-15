@@ -28,7 +28,7 @@ class App extends React.Component {
       borderLayer: L.geoJSON(borderData),
       center: { lat: 44.0886, lng: -72.7317 },
       score: 100,
-      startPoint: { lat: undefined, lng: undefined },
+      startPosition: { lat: 1, lng: 1 },
       markerPosition: { lat: 44.0886, lng: -72.7317 },
       pathArray: [],
       counties: [],
@@ -73,13 +73,13 @@ class App extends React.Component {
     }
 
     this.setState({
-      startPoint: { lat: randLat, lng: randLng },
+      startPosition: { lat: randLat, lng: randLng },
       markerPosition: { lat: randLat, lng: randLng }
     })
 
 
     this.setState(state => {
-      let pathArray = state.pathArray.concat(state.startPoint)
+      let pathArray = state.pathArray.concat(state.startPosition)
       return {
         pathArray
       }
@@ -215,6 +215,12 @@ class App extends React.Component {
 
   }
 
+
+  returnPosition = () => {
+
+
+  }
+
   render() {
     let quit = this.state.quit
     let modalDisplay = this.state.modalDisplay
@@ -231,7 +237,7 @@ class App extends React.Component {
           <Modal modalDisplay={this.state.modalDisplay} />
         </div>
         <div id="body">
-          <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition} />
+          <Maplet id="maplet" zoom={this.state.zoom} markerPosition={this.state.markerPosition} startPosition={this.state.startPosition} />
 
           <div id="menu">
             <div id="gridForDirectionalButtons">
