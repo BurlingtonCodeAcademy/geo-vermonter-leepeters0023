@@ -4,22 +4,23 @@ import LeafletPip from 'leaflet-pip';
 import borderData from './border.js';
 import ReactDOM from 'react-dom';
 
-// ----------React Components---------------------------//
+// React Components ^ ^ ^ ------------------------
+
 import Maplet from './Map.js';
 import './App.css';
 import Infopanel from './Infopanel.js'
 import Modal from './Modal.js'
 
-// Variable Declaration-------------------------------
+// Variable Declaration---------------------------
 
 let randLat;
 let randLng;
 let layerArray;
-
+let pathArray;
+ 
 class App extends React.Component {
   constructor(props) {
     super(props)
-
     //setting the state
     this.state = {
       start: false,
@@ -31,19 +32,19 @@ class App extends React.Component {
       initialPoint: { lat: 44.0886, lng: -72.7317 },
       score: 100,
       markerPosition: { lat: 44.0886, lng: -72.7317 },
-      pathArray: [],
       county: [],
       town: [],
       modalDisplay: false,
     }
   }
-  // Function to pick random coordinates and verify within VT-----------------
+  // Function to pick random coordinates and verify within VT
 
   checkValidCoord = () => {
     let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
     let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
     let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
-    //If random coordinate is not within VT--------
+    //If random coordinate is not within VT
+    
     while (layerArray.length === 0) {
       let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
       let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
@@ -54,15 +55,14 @@ class App extends React.Component {
       centerView: { lat: randLat, lng: randLng },
       initialPoint: { lat: randLat, lng: randLng }
     })
-
-
+   
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
         pathArray
       }
     });
-
+    
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${randLat}&lon=${randLng}&format=json`)
       .then(data => data.json())
       .then(jsonObj => {
@@ -80,19 +80,17 @@ class App extends React.Component {
           county: jsonObj.address.county,
           town: town
         })
-        console.log(jsonObj)
       })
-      
   }
 
-  //Modal functions----------------------------------
+  // Modal functions----------------------------------
 
   showModal = () => {
     this.setState({
       modalDisplay: true
     })
   }
-  //When player starts the game--------------------------
+  // When player starts the game--------------------------
 
   startGame = () => {
     this.setState({
@@ -106,13 +104,10 @@ class App extends React.Component {
       initialPoint: { lat: randLat, lng: randLng },
       breadCrumbArray: []
     })
-
     this.checkValidCoord()
-
-    
   }
 
-  //Direction Buttons-------------------------------------
+  // Direction Buttons-------------------------------------
 
   moveNorth = () => {
     this.setState({
@@ -121,9 +116,8 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score)
-
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -131,7 +125,6 @@ class App extends React.Component {
       }
     })
   }
-
   moveSouth = () => {
     this.setState({
       centerView: {
@@ -139,8 +132,8 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score);
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -148,7 +141,6 @@ class App extends React.Component {
       }
     })
   }
-
   moveEast = () => {
     this.setState({
       centerView: {
@@ -156,8 +148,8 @@ class App extends React.Component {
         lng: this.state.centerView.lng + 0.0025
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score);
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -165,7 +157,6 @@ class App extends React.Component {
       }
     })
   }
-
   moveWest = () => {
     this.setState({
       centerView: {
@@ -173,9 +164,9 @@ class App extends React.Component {
         lng: this.state.centerView.lng - 0.0025
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score);
-
+ // Direction Buttons end -----------------------------
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -184,7 +175,7 @@ class App extends React.Component {
     })
   }
 
-  //-------when player clicks guess button------------
+  // When player clicks guess button------------
 
   makeGuess = () => {
     this.setState({
@@ -203,21 +194,17 @@ class App extends React.Component {
     setTimeout(() => {window.location.reload(); }, 2000);
   }
  
-  //when user clicks return button, site takes them back to their original starting spot, with 0 points deducted
+  // When user clicks return button, site takes them back to their original starting spot, with 0 points deducted
   returnPosition = () => {
     this.setState({
       centerView: this.state.initialPoint
     })
-
-
   }
 
   render() {
     let quit = this.state.quit
     let guess = this.state.guess
     let initialPoint = this.state.initialPoint
-    
-
     return (
       <div>
         <div id="header">
@@ -231,7 +218,6 @@ class App extends React.Component {
         </div>
         <div id="body">
           <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} />
-
           <div id="menu">
 
             <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
@@ -262,7 +248,5 @@ class App extends React.Component {
       </div>
     )
   }
-
 }
-
 export default App;

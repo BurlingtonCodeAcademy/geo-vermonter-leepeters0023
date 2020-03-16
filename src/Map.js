@@ -11,10 +11,8 @@ class Maplet extends Component {
     super(props);
     this.state = {
       centerView: this.props.centerView
-    
     }
   }
-
   componentDidMount() {
     //Creates the Map
     this.map = L.map('map', {
@@ -24,21 +22,21 @@ class Maplet extends Component {
         { attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community', zoomControl: false }),
       ],
     })
-    //center the map on VT and zooms out
+    //Center the map on VT and zooms out
     this.map.setView([43.89, -72.7317], 8)
 
     //Gives the outline of VT
     this.props.vtBorder.addTo(this.map).setStyle({ fillColor: 'rgba(0,0,0,0)' })
 
-    //Creates a map marker
+    //Creates a marker displaying a random lat lon
     this.marker = L.marker(this.props.centerView).addTo(this.map)
 
-    //Creates breadcrumb polyline
-   // this.polyline = L.polyline(pathArray, {color: 'red'}).addTo(this.map);
+    //Creates breadcrumb polyline following map movement 
+    this.polyline = L.polyline(this.pathArray, {color: 'red'}).addTo(this.map);
   }
-
+  
   componentDidUpdate() {
-    //disable map controls
+    //disable map controls on game start 
     this.map.setZoom(this.props.zoom)
     this.map.dragging.disable()
     this.map.scrollWheelZoom.disable()
@@ -60,6 +58,5 @@ class Maplet extends Component {
   render() {
     return <div id='map' />
   }
-
 }
 export default Maplet
