@@ -45,6 +45,7 @@
   height: 50px;
   width: 75px;
   margin-bottom: 100px;
+  justify-self: center;
   grid-area: center;
 }
 #southButton {
@@ -63,6 +64,8 @@
 #returnButton {
   height: 50px;
   width: 75px;
+  justify-self: center;
+  text-align: center;
 }
 /* - - - ^ ^ buttons ^ ^ - - - */ 
 #body {
@@ -84,6 +87,10 @@
   position: relative;
   z-index: 1;
  }
+h2{
+  text-align: center;
+  
+}
 a.leaflet-control-zoom-out{
 display: none;
 }
