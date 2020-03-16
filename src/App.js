@@ -16,7 +16,6 @@ import Modal from './Modal.js'
 let randLat;
 let randLng;
 let layerArray;
-let pathArray;
  
 class App extends React.Component {
   constructor(props) {
@@ -102,7 +101,7 @@ class App extends React.Component {
       zoom: 18,
       centerView: { lat: randLat, lng: randLng },
       initialPoint: { lat: randLat, lng: randLng },
-      breadCrumbArray: []
+      pathArray: []
     })
     this.checkValidCoord()
   }
@@ -110,7 +109,7 @@ class App extends React.Component {
   // Direction Buttons-------------------------------------
 
   moveNorth = () => {
-    this.setState({
+     this.setState({
       centerView: {
         lat: this.state.centerView.lat + .002,
         lng: this.state.centerView.lng
