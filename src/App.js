@@ -4,9 +4,8 @@ import L from 'leaflet';
 import LeafletPip from 'leaflet-pip';
 import borderData from './border.js';
 import ReactDOM from 'react-dom';
+// React Components ^ ^ ^ ------------------------
 
-
-// ----------React Components---------------------------//
 import Maplet from './Map.js';
 import './App.css';
 import Infopanel from './Infopanel.js'
@@ -14,17 +13,19 @@ import pageModal from './Modal.js'
 
 Modal.setAppElement(pageModal)
 
-// Variable Declaration-------------------------------
+// Variable Declaration --------------------------
 
 let randLat;
 let randLng;
 let layerArray;
-
+let pathArray;
+ 
 class App extends React.Component {
   constructor(props) {
     super(props)
 
     //----Setting the State-------------------------------------
+    
     this.state = {
       start: false,
       quit: false,
@@ -35,7 +36,6 @@ class App extends React.Component {
       initialPoint: { lat: 44.0886, lng: -72.7317 },
       score: 100,
       markerPosition: { lat: 44.0886, lng: -72.7317 },
-      pathArray: [],
       county: [],
       town: [],
       modalDisplay: false,
@@ -65,6 +65,7 @@ class App extends React.Component {
       initialPoint: { lat: randLat, lng: randLng }
     })
 
+   
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -73,6 +74,7 @@ class App extends React.Component {
     });
 
     //retrieves the county and town from the rand lat and long--------
+    
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${randLat}&lon=${randLng}&format=json`)
       .then(data => data.json())
       .then(jsonObj => {
@@ -90,12 +92,12 @@ class App extends React.Component {
           county: jsonObj.address.county,
           town: town
         })
-        console.log(jsonObj)
       })
   }
   //------------------------------------------------------------------------------//
 
-  //When player starts the game--------------------------
+
+  // When player starts the game--------------------------
 
   startGame = () => {
     this.setState({
@@ -117,7 +119,7 @@ class App extends React.Component {
 
 
   //Direction Button Functions------------------------------------------------------------//
-
+  
   moveNorth = () => {
     this.setState({
       centerView: {
@@ -125,9 +127,8 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score)
-
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -135,7 +136,6 @@ class App extends React.Component {
       }
     })
   }
-
   moveSouth = () => {
     this.setState({
       centerView: {
@@ -143,8 +143,8 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score);
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -152,7 +152,6 @@ class App extends React.Component {
       }
     })
   }
-
   moveEast = () => {
     this.setState({
       centerView: {
@@ -160,8 +159,8 @@ class App extends React.Component {
         lng: this.state.centerView.lng + 0.0025
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score);
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -169,7 +168,6 @@ class App extends React.Component {
       }
     })
   }
-
   moveWest = () => {
     this.setState({
       centerView: {
@@ -177,9 +175,9 @@ class App extends React.Component {
         lng: this.state.centerView.lng - 0.0025
       },
       score: this.state.score - 1,
+      pathArray: [this.lat, this.lng]
     });
-    console.log(this.state.score);
-
+ // Direction Buttons end -----------------------------
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -243,9 +241,9 @@ class App extends React.Component {
     setTimeout(() => { window.location.reload(); }, 2500);
   }
 
-
-  //-----When user clicks return button, takes them back to original spot-----
-  returnPosition = () => {
+  //-----When user clicks return button, takes them back to starting spot-----------
+ 
+    returnPosition = () => {
     this.setState({
       centerView: this.state.initialPoint
     })
@@ -255,11 +253,11 @@ class App extends React.Component {
 
   //Modal functions-Not Currently Working---------------------------
   //displays modal----------
-  // showModal = () => {
-  //   this.setState({
-  //     modalDisplay: true
-  //   })
-  // }
+  showModal = () => {
+    this.setState({
+      modalDisplay: true
+    })
+}
 
   // //closes modal-----------
   // endModal = (event) => {
@@ -286,7 +284,6 @@ class App extends React.Component {
 
         <div id="body">
           <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} />
-
           <div id="menu">
 
             <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
@@ -321,5 +318,4 @@ class App extends React.Component {
     )
   }
 }
-
 export default App;
