@@ -6,6 +6,7 @@ import LeafletPip from 'leaflet-pip'
 import App from './App.js'
 import pathArray from './App.js'
 
+// React Components ^ ^ ^ ------------------------
 class Maplet extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +33,7 @@ class Maplet extends Component {
     this.marker = L.marker(this.props.centerView).addTo(this.map)
 
     //Creates breadcrumb polyline following map movement 
-    this.polyline = L.polyline(this.pathArray, {color: 'red'}).addTo(this.map);
+    this.polyline = L.polyline(this.props.pathArray, {color: 'red'}).addTo(this.map);
   }
   
   componentDidUpdate() {

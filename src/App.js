@@ -11,7 +11,7 @@ import './App.css';
 import Infopanel from './Infopanel.js'
 import Modal from './Modal.js'
 
-// Variable Declaration---------------------------
+// Variable Declaration --------------------------
 
 let randLat;
 let randLng;
