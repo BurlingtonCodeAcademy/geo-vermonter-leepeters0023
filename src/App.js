@@ -1,5 +1,5 @@
 import React from 'react';
-//import Modal from './react-modal'
+import Modal from './react-modal'
 import L from 'leaflet';
 import LeafletPip from 'leaflet-pip';
 import borderData from './border.js';
@@ -11,7 +11,7 @@ import './App.css';
 import Infopanel from './Infopanel.js'
 import pageModal from './Modal.js'
 
-// Modal.setAppElement(pageModal)
+Modal.setAppElement(pageModal)
 
 // Variable Declaration --------------------------
 
@@ -44,17 +44,17 @@ class App extends React.Component {
       pathArray: []
     }
   }
-  //---------------------------------------------------------------------------------//
+  //--------------------------------------------------------------
 
 
-  // Function to pick random coordinates and verify within VT-----------------
+  // Func to pick random coords and verify if coords within VT ---
 
   checkValidCoord = () => {
     let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
     let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
     let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
 
-    //this runs when the random coordinate is not within VT--------
+    // this runs when the random coordinate is not within VT--------
     while (layerArray.length === 0) {
       let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
       let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
@@ -65,14 +65,13 @@ class App extends React.Component {
       centerView: { lat: randLat, lng: randLng },
       initialPoint: { lat: randLat, lng: randLng }
     })
-
-   
+    // below adds coords to state to later be used in polyline
     this.setState(state => {
-      let pathArray = state.pathArray.concat(state.centerView) // *********** make functionality the same and use 
+      let pathArray = state.pathArray.concat(state.centerView) 
       return {
-        pathArray
+        pathArray 
       }
-    }); // replace with move button functionality and use initial point 
+    }); 
 
     //retrieves the county and town from the rand lat and long--------
     
@@ -97,7 +96,6 @@ class App extends React.Component {
   }
   //------------------------------------------------------------------------------//
 
-
   // When player starts the game--------------------------
 
   startGame = () => {
@@ -114,13 +112,10 @@ class App extends React.Component {
     this.checkValidCoord()
   }
 
+    //------------------------------------------------------------------------------//
 
-  //---------------------------------------------------------------------------------------//
-
-
-
-  //Direction Button Functions------------------------------------------------------------//
-  
+  //Direction Button Functions------------------------------------------------------//
+  // each will reduce player score by 1pt with each movement
   moveNorth = () => {
      this.setState({
       centerView: {
@@ -133,10 +128,9 @@ class App extends React.Component {
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
-        pathArray // the problem here is by setting this value inside of a func
+        pathArray 
       }
     })
-    console.log(pathArray)
   }
   moveSouth = () => {
     this.setState({
@@ -188,13 +182,12 @@ class App extends React.Component {
     })
   }
 
-  //---------------------------------------------------------------------------------------------------//
+  //------------------------------------------------------------------------------//
 
 
+  //---- Button Functions------------------------------------
 
-  //----Button Functions---------------------------------------------------------------------------
-
-  //-------when player clicks guess button------------------//
+  //------- when player clicks guess button ------------------//
 
   makeGuess = () => {
     this.setState({
@@ -203,7 +196,7 @@ class App extends React.Component {
     })
   }
 
-  //checks their selection against the actual county------//
+  //checks their selection against the actual county ------//
   confirmGuess = event => {
     event.preventDefault()
     // checks if the county guess is the same as the county
@@ -231,8 +224,6 @@ class App extends React.Component {
     });
   }
 
-
-
   //-------When player clicks quit button--------------------------
   quitGame = () => {
     this.setState({
@@ -250,11 +241,10 @@ class App extends React.Component {
       centerView: this.state.initialPoint
     })
   }
-  //-----------------------------------------------------------------------------------------//
+   //------------------------------------------------------------------------------//
 
-
-  //Modal functions-Not Currently Working---------------------------
-  //displays modal----------
+  // Modal functions-Not Currently Working---------------------------
+  // displays modal ----------
   showModal = () => {
     this.setState({
       modalDisplay: true
@@ -269,7 +259,7 @@ class App extends React.Component {
   //   });
   // }
 
-  //--------------------------------------------------------------------------------------------//
+  //------------------------------------------------------------------------------//
 
   render() {
     let quit = this.state.quit
