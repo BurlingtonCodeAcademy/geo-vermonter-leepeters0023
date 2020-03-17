@@ -32,10 +32,6 @@ class Maplet extends Component {
 
     //Creates a marker displaying a random lat lon
     this.marker = L.marker(this.props.centerView).addTo(this.map)
-
- 
-    //Creates breadcrumb polyline following map movement 
-    //this.polyline = L.polyline(this.props.pathArray, {color: 'red'}).addTo(this.map);
   }
   
   componentDidUpdate() {
@@ -51,6 +47,10 @@ class Maplet extends Component {
     //setting the marker to initial position so it doesn't move when you click on NSEW buttons
     this.marker = L.marker(this.props.initialPoint).addTo(this.map)
     this.map.panTo(this.props.centerView)
+
+    //Creates breadcrumb polyline following map movement 
+    let polyArray = Array.from(this.props.pathArray)
+    this.polyline = L.polyline(polyArray, {color: 'red'}).addTo(this.map);
 
     // If the centerView has updated, and sets a close zoom of point 
     if (this.props.centerView !== this.state.centerView) {

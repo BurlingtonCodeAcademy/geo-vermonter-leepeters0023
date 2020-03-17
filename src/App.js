@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from 'react-modal'
+//import Modal from './react-modal'
 import L from 'leaflet';
 import LeafletPip from 'leaflet-pip';
 import borderData from './border.js';
@@ -11,13 +11,14 @@ import './App.css';
 import Infopanel from './Infopanel.js'
 import pageModal from './Modal.js'
 
-Modal.setAppElement(pageModal)
+// Modal.setAppElement(pageModal)
 
 // Variable Declaration --------------------------
 
 let randLat;
 let randLng;
 let layerArray;
+let pathArray = []
  
 class App extends React.Component {
   constructor(props) {
@@ -39,7 +40,8 @@ class App extends React.Component {
       town: [],
       modalDisplay: false,
       correctGuess: false,
-      countyGuess: false
+      countyGuess: false,
+      pathArray: []
     }
   }
   //---------------------------------------------------------------------------------//
@@ -66,11 +68,11 @@ class App extends React.Component {
 
    
     this.setState(state => {
-      let pathArray = state.pathArray.concat(state.centerView)
+      let pathArray = state.pathArray.concat(state.centerView) // *********** make functionality the same and use 
       return {
         pathArray
       }
-    });
+    }); // replace with move button functionality and use initial point 
 
     //retrieves the county and town from the rand lat and long--------
     
@@ -108,7 +110,6 @@ class App extends React.Component {
       zoom: 18,
       centerView: { lat: randLat, lng: randLng },
       initialPoint: { lat: randLat, lng: randLng },
-      pathArray: []
     })
     this.checkValidCoord()
   }
@@ -127,14 +128,15 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
-      pathArray: [this.lat, this.lng]
+      pathArrayVar: [this.lat, this.lng]
     });
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
-        pathArray
+        pathArray // the problem here is by setting this value inside of a func
       }
     })
+    console.log(pathArray)
   }
   moveSouth = () => {
     this.setState({
@@ -143,7 +145,7 @@ class App extends React.Component {
         lng: this.state.centerView.lng
       },
       score: this.state.score - 1,
-      pathArray: [this.lat, this.lng]
+      pathArrayVar: [this.lat, this.lng]
     });
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
@@ -159,7 +161,7 @@ class App extends React.Component {
         lng: this.state.centerView.lng + 0.0025
       },
       score: this.state.score - 1,
-      pathArray: [this.lat, this.lng]
+      pathArrayVar: [this.lat, this.lng]
     });
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
@@ -175,7 +177,7 @@ class App extends React.Component {
         lng: this.state.centerView.lng - 0.0025
       },
       score: this.state.score - 1,
-      pathArray: [this.lat, this.lng]
+      pathArrayVar: [this.lat, this.lng]
     });
  // Direction Buttons end -----------------------------
     this.setState(state => {
@@ -283,7 +285,7 @@ class App extends React.Component {
         </div>
 
         <div id="body">
-          <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} />
+          <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} pathArray={this.state.pathArray}/>
           <div id="menu">
 
             <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
