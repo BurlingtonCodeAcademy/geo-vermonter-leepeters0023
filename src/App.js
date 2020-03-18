@@ -4,6 +4,7 @@ import L from 'leaflet';
 import LeafletPip from 'leaflet-pip';
 import borderData from './border.js';
 import ReactDOM from 'react-dom';
+
 // React Components ^ ^ ^ ------------------------
 
 import Maplet from './Map.js';
@@ -20,12 +21,13 @@ let randLng;
 let layerArray;
 let pathArray = []
  
+
 class App extends React.Component {
   constructor(props) {
     super(props)
 
     //----Setting the State-------------------------------------
-    
+
     this.state = {
       start: false,
       quit: false,
@@ -65,6 +67,7 @@ class App extends React.Component {
       centerView: { lat: randLat, lng: randLng },
       initialPoint: { lat: randLat, lng: randLng }
     })
+
     // below adds coords to state to later be used in polyline
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView) 
@@ -74,7 +77,7 @@ class App extends React.Component {
     }); 
 
     //retrieves the county and town from the rand lat and long--------
-    
+
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${randLat}&lon=${randLng}&format=json`)
       .then(data => data.json())
       .then(jsonObj => {
@@ -108,6 +111,10 @@ class App extends React.Component {
       zoom: 18,
       centerView: { lat: randLat, lng: randLng },
       initialPoint: { lat: randLat, lng: randLng },
+      pathArray: [],
+      modalDisplay: false,
+      correctGuess: false,
+      countyGuess: false
     })
     this.checkValidCoord()
   }
@@ -116,8 +123,10 @@ class App extends React.Component {
 
   //Direction Button Functions------------------------------------------------------//
   // each will reduce player score by 1pt with each movement
+  //---------------------------------------------------------------------------------------//
+
   moveNorth = () => {
-     this.setState({
+    this.setState({
       centerView: {
         lat: this.state.centerView.lat + .002,
         lng: this.state.centerView.lng
@@ -173,7 +182,7 @@ class App extends React.Component {
       score: this.state.score - 1,
       pathArrayVar: [this.lat, this.lng]
     });
- // Direction Buttons end -----------------------------
+    // Direction Buttons end -----------------------------
     this.setState(state => {
       let pathArray = state.pathArray.concat(state.centerView)
       return {
@@ -194,22 +203,22 @@ class App extends React.Component {
       modalDisplay: true,
       guess: true
     })
+    this.confirmGuess()
   }
 
   //checks their selection against the actual county ------//
   confirmGuess = event => {
-    event.preventDefault()
     // checks if the county guess is the same as the county
     if (this.state.county.includes(this.state.countyGuess)) {
-      this.subtitle.textContent = 'You are correct & awarded 50 points!'
+      alert = 'You are correct & awarded 50 points!'
       this.setState({
         correctGuess: true,
         start: false,
         score: this.state.score + 50
       })
-      this.endModal(event);
+      this.closeModal(event);
     } else {
-      this.subtitle.textContent = 'Nope - not there, you lost 10 points - Guess again'
+      alert = 'Nope - not there, you lost 10 points - Guess again'
       this.setState({
         score: this.state.score - 10,
         correctGuess: false,
@@ -220,6 +229,7 @@ class App extends React.Component {
 
   handleChange = (event) => {
     this.setState({
+      modalDisplay: event.target.value,
       countyGuess: event.target.value
     });
   }
@@ -235,29 +245,30 @@ class App extends React.Component {
   }
 
   //-----When user clicks return button, takes them back to starting spot-----------
- 
-    returnPosition = () => {
+
+  returnPosition = () => {
     this.setState({
       centerView: this.state.initialPoint
     })
   }
    //------------------------------------------------------------------------------//
 
-  // Modal functions-Not Currently Working---------------------------
-  // displays modal ----------
-  showModal = () => {
+ 
+  //Modal functions-----------------------------------
+  //displays modal----------
+  openModal = () => {
     this.setState({
       modalDisplay: true
     })
-}
+  }
 
   // //closes modal-----------
-  // endModal = (event) => {
-  //   event.preventDefault();
-  //   this.setState({
-  //     modalDisplay: false,
-  //   });
-  // }
+  closeModal = () => {
+
+    this.setState({
+      modalDisplay: false,
+    });
+  }
 
   //------------------------------------------------------------------------------//
 
@@ -265,13 +276,15 @@ class App extends React.Component {
     let quit = this.state.quit
     let initialPoint = this.state.initialPoint
     let correctGuess = this.state.correctGuess
+    let countyGuess = this.state.countyGuess
+
 
     return (
       <div>
         <div id="header">
           <button id="startButton" className="button" onClick={this.startGame} disabled={this.state.start}> Start Game</button>
           <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
-          <button id="guessButton" className="button" onClick={this.makeGuess} disabled={!this.state.start}>Guess</button>
+          <button id="guessButton" className="button" onClick={this.openModal} openModal={this.openModal} modalDisplay={this.state.modalDisplay} handleChange={this.handleChange} showModal={this.showModal} disabled={!this.state.start}>Guess</button>
         </div>
 
         <div id="body">
@@ -285,17 +298,12 @@ class App extends React.Component {
               <button id="southButton" className="button" onClick={this.moveSouth}>South</button>
               <button id="eastButton" className="button" onClick={this.moveEast}>East</button>
             </div>
-            <h2>Geo-Vermonter - How Well Do You Know Vermont?</h2>
-            <div id='modal'></div>
-            <pageModal modalDisplay={this.state.modalDisplay} showModal={this.showModal} endModal={this.endModal} />
-
             {/* // if give up clicked or user guessed correctly, give the markerPosition, county, and town */}
             {
               ((quit) || (correctGuess)) &&
               <Infopanel lat={this.state.initialPoint.lat.toFixed(4)} lng={this.state.initialPoint.lng.toFixed(4)}
                 county={this.state.county} town={this.state.town} />
-            }
-      score = {this.state.score}
+            }score = {this.state.score}
 
             {/* // if give up button not clicked, all areas post '?' marks  */}
             {
@@ -304,6 +312,7 @@ class App extends React.Component {
                 score={this.state.score}
               />
             }
+            <pageModal handleChange={this.handleChange} modalDisplay={this.state.modalDisplay} closeModal={this.closeModal} />
           </div>
         </div >
       </div >
