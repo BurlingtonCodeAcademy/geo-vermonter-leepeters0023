@@ -47,6 +47,7 @@
   margin-bottom: 100px;
   justify-self: center;
   grid-area: center;
+  text-align: center;
 }
 #southButton {
   height: 50px;
@@ -54,16 +55,26 @@
   margin-top: 100px;
   grid-area: center;
   justify-self: center;
+  text-align: center;
 }
 #eastButton {
   height: 50px;
   width: 75px;
   justify-self: left;
   grid-area: right; 
+  text-align: center;
 }
 #returnButton {
   height: 50px;
   width: 75px;
+  text-align: center;
+  justify-self: center;
+  text-align: center;
+}
+#cancelButton {
+  height: 50px;
+  width: 75px;
+  text-align: center;
   justify-self: center;
   text-align: center;
 }
@@ -74,10 +85,31 @@
   grid-template-areas: 
   "maplet maplet menu";
 }
+#modal{
+  display: flex; 
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  top: 0;
+  border-bottom: solid black 4px;
+  background-color: #222629;
+  color: aqua;
+  animation: fadeIn ease 10s;
+  animation-duration: 2s;
+  transition: all 2s ease-in;
+  -webkit-animation: ease-in;
+}
+
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+  margin: 5px;
+}
 #menu {
   height: 90vh;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   z-index: 0;
   position: relative;
 }
@@ -85,7 +117,6 @@
   height: 90vh;  
   display: flex;
   position: relative;
-  z-index: 1;
  }
 h2{
   text-align: center;
@@ -98,14 +129,4 @@ a.leaflet-control-zoom-in{
   display:none;
 }
 
-/* Modal CSS--------------------------------- */
 
-#modal{
-  width: 80vw;
-  height: 80vh;
-  z-index: 3000;
-  position: relative;
-  justify-self: center;
-  top: 0;
-  background-color: rgba(0, 0, 0, 0.3)
-}

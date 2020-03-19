@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from './react-modal'
+import Modal from './Modal'
 import L from 'leaflet';
 import LeafletPip from 'leaflet-pip';
 import borderData from './border.js';
@@ -10,9 +10,8 @@ import ReactDOM from 'react-dom';
 import Maplet from './Map.js';
 import './App.css';
 import Infopanel from './Infopanel.js'
-import pageModal from './Modal.js'
 
-Modal.setAppElement(pageModal)
+//Modal.setAppElement(Modal)
 
 // Variable Declaration --------------------------
 
@@ -20,7 +19,6 @@ let randLat;
 let randLng;
 let layerArray;
 let pathArray = []
- 
 
 class App extends React.Component {
   constructor(props) {
@@ -47,7 +45,6 @@ class App extends React.Component {
     }
   }
   //--------------------------------------------------------------
-
 
   // Func to pick random coords and verify if coords within VT ---
 
@@ -198,16 +195,16 @@ class App extends React.Component {
 
   //------- when player clicks guess button ------------------//
 
-  makeGuess = () => {
+  makeGuess = (event) => {
     this.setState({
-      modalDisplay: true,
+      //modalDisplay: true,
       guess: true
     })
     this.confirmGuess()
   }
 
   //checks their selection against the actual county ------//
-  confirmGuess = event => {
+  confirmGuess = (event) => {
     // checks if the county guess is the same as the county
     if (this.state.county.includes(this.state.countyGuess)) {
       alert = 'You are correct & awarded 50 points!'
@@ -256,14 +253,14 @@ class App extends React.Component {
  
   //Modal functions-----------------------------------
   //displays modal----------
-  openModal = () => {
+  openModal = (event) => {
     this.setState({
       modalDisplay: true
     })
   }
 
   // //closes modal-----------
-  closeModal = () => {
+  closeModal = (event) => {
 
     this.setState({
       modalDisplay: false,
@@ -278,7 +275,6 @@ class App extends React.Component {
     let correctGuess = this.state.correctGuess
     let countyGuess = this.state.countyGuess
 
-
     return (
       <div>
         <div id="header">
@@ -288,9 +284,11 @@ class App extends React.Component {
         </div>
 
         <div id="body">
-          <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} pathArray={this.state.pathArray}/>
+          
+          <Maplet id="maplet" vtBorder={this.state.vtBorder} zoom={this.state.zoom} markerPosition={this.state.markerPosition} centerView={this.state.centerView} initialPoint={this.state.initialPoint} pathArray={this.state.pathArray}> 
+          </Maplet>
           <div id="menu">
-
+          <Modal handleChange={this.handleChange} modalDisplay={this.state.modalDisplay} closeModal={this.closeModal} />
             <button id="returnButton" className="button" onClick={this.returnPosition}>Return</button>
             <div id="gridForDirectionalButtons">
               <button id="westButton" className="button" onClick={this.moveWest}>West</button>
@@ -312,7 +310,6 @@ class App extends React.Component {
                 score={this.state.score}
               />
             }
-            <pageModal handleChange={this.handleChange} modalDisplay={this.state.modalDisplay} closeModal={this.closeModal} />
           </div>
         </div >
       </div >
