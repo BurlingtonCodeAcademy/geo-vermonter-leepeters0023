@@ -49,17 +49,19 @@ class App extends React.Component {
   // Func to pick random coords and verify if coords within VT ---
 
   checkValidCoord = () => {
-    let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
-    let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
+    let randLat = Math.random() * (45.00541896831666 - 42.730315121762715) + 42.730315121762715
+    let randLng = (Math.random() * (71.51022535353107 - 73.35218221090553) + 73.35218221090553) * -1;
     let layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
 
     // this runs when the random coordinate is not within VT--------
     while (layerArray.length === 0) {
-      let randLat = Math.random() * (45.005419 - 42.730315) + 42.730315
-      let randLng = (Math.random() * (71.510225 - 73.35218) + 73.35218) * -1
+      let randLat = Math.random() * (45.00541896831666 - 42.730315121762715) + 42.730315121762715
+      let randLng = (Math.random() * (71.51022535353107 - 73.35218221090553) + 73.35218221090553) * -1
       layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
     }
-
+      console.log(randLat)
+      console.log(randLng)
+      console.log(layerArray.length)
     this.setState({
       centerView: { lat: randLat, lng: randLng },
       initialPoint: { lat: randLat, lng: randLng }
@@ -79,6 +81,7 @@ class App extends React.Component {
       .then(data => data.json())
       .then(jsonObj => {
         let town;
+        console.log(jsonObj)
         if (jsonObj.address.city) {
           town = jsonObj.address.city
         } else if (jsonObj.address.town) {
@@ -205,17 +208,21 @@ class App extends React.Component {
 
   //checks their selection against the actual county ------//
   confirmGuess = (event) => {
+    console.log('its hitting the confirmGuess function')
+    console.log(this.state.county)
+    console.log(this.state.town)
     // checks if the county guess is the same as the county
     if (this.state.county.includes(this.state.countyGuess)) {
-      alert = 'You are correct & awarded 50 points!'
+      alert('You are correct & awarded 50 points!')
       this.setState({
         correctGuess: true,
         start: false,
         score: this.state.score + 50
       })
       this.closeModal(event);
+      setTimeout(() => { window.location.reload(); }, 1500)
     } else {
-      alert = 'Nope - not there, you lost 10 points - Guess again'
+      alert ('Nope - not there, you lost 10 points - Guess again')
       this.setState({
         score: this.state.score - 10,
         correctGuess: false,
@@ -225,10 +232,12 @@ class App extends React.Component {
   }
 
   handleChange = (event) => {
+    
     this.setState({
       modalDisplay: event.target.value,
       countyGuess: event.target.value
     });
+    this.confirmGuess()
   }
 
   //-------When player clicks quit button--------------------------
