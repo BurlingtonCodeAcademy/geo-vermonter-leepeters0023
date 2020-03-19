@@ -6,7 +6,7 @@ class Modal extends React.Component {
     return (
       <div>
         {(this.props.modalDisplay) ?
-          <div id="modal">
+          <div id="modal" className="modal">
             <h2> Do You Know Which County You Are In?</h2>
             <button id='cancelButton' class="button" onClick={this.props.closeModal} closeModal={this.closeModal} modalDisplay={this.props.modalDisplay}>Cancel That</button>
             <form >

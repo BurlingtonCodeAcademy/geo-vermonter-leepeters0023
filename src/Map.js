@@ -50,7 +50,7 @@ class Maplet extends Component {
 
     //Creates breadcrumb polyline following map movement 
     let polyArray = Array.from(this.props.pathArray)
-    this.polyline = L.polyline(polyArray, {color: 'red'}).addTo(this.map);
+    this.polyline = L.polyline(polyArray, {color: 'red', weight: '5', dashArray: '20, 20', dashOffset: '0'}).addTo(this.map);
 
     // If the centerView has updated, and sets a close zoom of point 
     if (this.props.centerView !== this.state.centerView) {
