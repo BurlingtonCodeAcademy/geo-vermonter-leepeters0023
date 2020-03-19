@@ -8,6 +8,8 @@
   height: 75px;
   background-color: #222629;
 }
+
+
 /* - - - buttons - - - */ 
 .button {
   background-color: rgb(95, 97, 95); 
@@ -131,4 +133,6 @@ a.leaflet-control-zoom-in{
   display:none;
 }
 
-
+#infopanel{
+  border: 1px solid black
+}
