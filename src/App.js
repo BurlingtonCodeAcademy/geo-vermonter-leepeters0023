@@ -193,7 +193,6 @@ class App extends React.Component {
 
   //------------------------------------------------------------------------------//
 
-
   //---- Button Functions------------------------------------
 
   //------- when player clicks guess button ------------------//
@@ -305,20 +304,21 @@ class App extends React.Component {
               <button id="southButton" className="button" onClick={this.moveSouth}>South</button>
               <button id="eastButton" className="button" onClick={this.moveEast}>East</button>
             </div>
+            <div id="infopanel">
             {/* // if give up clicked or user guessed correctly, give the markerPosition, county, and town */}
             {
               ((quit) || (correctGuess)) &&
               <Infopanel lat={this.state.initialPoint.lat.toFixed(4)} lng={this.state.initialPoint.lng.toFixed(4)}
-                county={this.state.county} town={this.state.town} />
+                county={this.state.county} town={this.state.town}> 
+                </Infopanel>
             }score = {this.state.score}
-
+            </div>
             {/* // if give up button not clicked, all areas post '?' marks  */}
-            {
-              ((!quit) && (!correctGuess)) &&
+            <div id="subpanel">
+            {((!quit) && (!correctGuess)) &&
               <Infopanel lat={'?'} lng={'?'} county={'?'} town={'?'}
-                score={this.state.score}
-              />
-            }
+                score={this.state.score}/>}
+              </div>
           </div>
         </div >
       </div >

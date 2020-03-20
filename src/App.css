@@ -15,9 +15,9 @@
   background-color: rgb(95, 97, 95); 
   border: none;
   font-family: Courier;
+  font-size: 10pt;
   color: white;
   padding: 10px 25px;
-  text-align: center;
   display: inline-block;
   cursor: pointer;
   text-decoration: none;
@@ -45,14 +45,14 @@
 }
 #northButton {
   height: 50px;
-  width: 75px;
+  width: 80px;
   margin-bottom: 100px;
   justify-self: center;
   grid-area: center;
 }
 #southButton {
   height: 50px;
-  width: 75px;
+  width: 80px;
   margin-top: 100px;
   grid-area: center;
   justify-self: center;
@@ -66,8 +66,8 @@
   text-align: center;
 }
 #returnButton {
-  height: 50px;
-  width: 90px;
+  height: 40px;
+  width: 95px;
   text-align: center;
   justify-self: center;
 
@@ -116,6 +116,9 @@
   flex-direction: column;
   z-index: 0;
   position: relative;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  padding: 10px;
 }
 #maplet {
   height: 90vh;  
@@ -133,6 +136,17 @@ a.leaflet-control-zoom-in{
   display:none;
 }
 
-#infopanel{
-  border: 1px solid black
+#infopanel {
+  border: solid black 1px;
+  border-radius: 5px;
+  margin-top: 20px; 
+  margin-bottom: 20px;
+  font-weight: 200;
+  font-size: 20px;
+  padding: 10px;
+}
+#subpanel {
+  border: solid black 1px;
+  border-radius: 5px;
+  padding: 10px;
 }
