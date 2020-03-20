@@ -48,11 +48,13 @@ h1{
   width: 75px;
   justify-self: right;
   grid-area: left;
+  text-align: center;
 }
 #northButton {
   height: 50px;
   width: 80px;
   margin-bottom: 100px;
+  padding-right: -3px;
   justify-self: center;
   grid-area: center;
 }
@@ -60,6 +62,7 @@ h1{
   height: 50px;
   width: 80px;
   margin-top: 100px;
+  padding-right: -3px;
   grid-area: center;
   justify-self: center;
   text-align: center;
@@ -83,6 +86,7 @@ h1{
   width: 90px;
   justify-self: center;
   text-align: center;
+  padding-top: 5px;
   margin-bottom: 20px;
 }
 /* - - - ^ ^ buttons ^ ^ - - - */ 
