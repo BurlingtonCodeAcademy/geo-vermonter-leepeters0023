@@ -3,7 +3,6 @@ import Modal from './Modal'
 import L from 'leaflet';
 import LeafletPip from 'leaflet-pip';
 import borderData from './border.js';
-import ReactDOM from 'react-dom';
 
 // React Components ^ ^ ^ ------------------------
 
@@ -17,8 +16,6 @@ import Infopanel from './Infopanel.js'
 
 let randLat;
 let randLng;
-let layerArray;
-let pathArray = []
 
 class App extends React.Component {
   constructor(props) {
@@ -207,9 +204,6 @@ class App extends React.Component {
 
   //checks their selection against the actual county ------//
   confirmGuess = (event) => {
-    console.log('its hitting the confirmGuess function')
-    console.log(this.state.county)
-    console.log(this.state.town)
     // checks if the county guess is the same as the county
     if (this.state.county.includes(this.state.countyGuess)) {
       alert('You are correct & awarded 50 points!')
@@ -231,7 +225,6 @@ class App extends React.Component {
   }
 
   handleChange = (event) => {
-    
     this.setState({
       modalDisplay: event.target.value,
       countyGuess: event.target.value
