@@ -1,10 +1,5 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet'
 import L from 'leaflet'
-import borderData from './border.js'
-import LeafletPip from 'leaflet-pip'
-import App from './App.js'
-import pathArray from './App.js'
 
 // React Components ^ ^ ^ ------------------------
 class Maplet extends Component {

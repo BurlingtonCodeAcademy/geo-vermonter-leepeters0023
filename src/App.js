@@ -262,7 +262,6 @@ class App extends React.Component {
 
   // //closes modal-----------
   closeModal = (event) => {
-
     this.setState({
       modalDisplay: false,
     });
@@ -282,7 +281,7 @@ class App extends React.Component {
           <button id="startButton" className="button" onClick={this.startGame} disabled={this.state.start}> Start Game</button>
           <button id="quitButton" className="button" onClick={this.quitGame} disabled={!this.state.start}>Quit</button>
           <button id="guessButton" className="button" onClick={this.openModal} openModal={this.openModal} modalDisplay={this.state.modalDisplay} handleChange={this.handleChange} showModal={this.showModal} disabled={!this.state.start}>Guess</button>
-          <h1> Geo-Vermonter</h1>
+          <h1> Geo-Vermonter</h1>``
         </div>
 
         <div id="body">
