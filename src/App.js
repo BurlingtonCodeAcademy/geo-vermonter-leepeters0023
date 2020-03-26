@@ -52,8 +52,8 @@ class App extends React.Component {
 
     // this runs when the random coordinate is not within VT--------
     while (layerArray.length === 0) {
-      let randLat = Math.random() * (45.00541896831666 - 42.730315121762715) + 42.730315121762715
-      let randLng = (Math.random() * (71.51022535353107 - 73.35218221090553) + 73.35218221090553) * -1
+      randLat = Math.random() * (45.00541896831666 - 42.730315121762715) + 42.730315121762715
+      randLng = (Math.random() * (71.51022535353107 - 73.35218221090553) + 73.35218221090553) * -1
       layerArray = LeafletPip.pointInLayer([randLng, randLat], L.geoJSON(borderData));
     }
       console.log(randLat)
