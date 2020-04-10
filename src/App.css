@@ -1,0 +1,156 @@
+
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  align-items: space-between;
+  width: 100%;
+  height: 75px;
+  background-color: #222629;
+}
+h1{
+  text-align: right;
+  color: whitesmoke;
+  font-family: 'Sawarabi Mincho', sans-serif;
+  padding-left: 60px;
+}
+
+/* - - - buttons - - - */ 
+.button {
+  background-color: rgb(95, 97, 95); 
+  border: none;
+  font-family: 'Sawarabi Mincho', sans-serif;
+  font-size: 10pt;
+  color: white;
+  padding: 10px 25px;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 10px;
+  border-radius: 10px;
+}
+.button:hover {
+  background-color: black;
+  opacity: 50%;
+  transition: all .5s ease-out;
+  color: aqua;
+}
+#gridForDirectionalButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: 'left center right';
+  max-height: 200px;
+  align-items: center;
+}
+#westButton {
+  height: 50px;
+  width: 75px;
+  justify-self: right;
+  grid-area: left;
+  text-align: center;
+}
+#northButton {
+  height: 50px;
+  width: 80px;
+  margin-bottom: 100px;
+  padding-right: -3px;
+  justify-self: center;
+  grid-area: center;
+}
+#southButton {
+  height: 50px;
+  width: 80px;
+  margin-top: 100px;
+  padding-right: -3px;
+  grid-area: center;
+  justify-self: center;
+  text-align: center;
+}
+#eastButton {
+  height: 50px;
+  width: 75px;
+  justify-self: left;
+  grid-area: right; 
+  text-align: center;
+}
+#returnButton {
+  height: 40px;
+  width: 95px;
+  text-align: center;
+  justify-self: center;
+
+}
+#cancelButton {
+  height: 50px;
+  width: 90px;
+  justify-self: center;
+  text-align: center;
+  padding-top: 5px;
+  margin-bottom: 20px;
+}
+/* - - - ^ ^ buttons ^ ^ - - - */ 
+#body {
+  display: grid;
+  grid-template-columns: 75% 1fr;
+  grid-template-areas: 
+  "maplet maplet menu";
+}
+#modal{
+  display: flex; 
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  top: 0;
+  background-color: #222629;
+  color: aqua;
+  animation: fade .5s ease-in;
+}
+@keyframes fade {
+  0% {opacity: 50%;}
+  100% {opacity: 1%;}
+}
+.dropdown {
+  position: relative;
+  cursor: pointer;
+  margin: 5px;
+}
+#menu {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 0;
+  position: relative;
+  font-family: 'Sawarabi Mincho', sans-serif;
+  font-weight: bold;
+  padding: 10px;
+}
+#maplet {
+  height: 90vh;  
+  display: flex;
+  position: relative;
+ }
+h2{
+  text-align: center;
+}
+a.leaflet-control-zoom-out{
+display: none;
+}
+a.leaflet-control-zoom-in{
+  display:none;
+}
+#infopanel {
+  border: solid black 1px;
+  border-radius: 5px;
+  margin-top: 20px; 
+  margin-bottom: 20px;
+  font-weight: 200;
+  font-size: 20px;
+  padding: 10px;
+}
+#subpanel {
+  border: solid black 1px;
+  border-radius: 5px;
+  padding: 10px;
+}
